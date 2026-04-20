@@ -2,8 +2,19 @@
 
 import { useState, useMemo } from 'react'
 import { ChevronLeft, ChevronRight, Info } from 'lucide-react'
-import { format, addMonths, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, isToday, isBefore, startOfDay, getDay } from 'date-fns'
-import { Button } from '@/components/ui/button'
+import {
+  format,
+  addMonths,
+  startOfMonth,
+  endOfMonth,
+  eachDayOfInterval,
+  isSameMonth,
+  isSameDay,
+  isToday,
+  isBefore,
+  startOfDay,
+  getDay,
+} from 'date-fns'
 import { cn } from '@/lib/utils'
 import { BUSINESS_HOURS, TIME_SLOTS, SATURDAY_TIME_SLOTS } from '@/lib/data'
 
@@ -36,13 +47,13 @@ export function DateTimeStep({ selectedDate, selectedTime, onSelect }: DateTimeS
 
   const getTimeSlotsForDate = (date: Date): string[] => {
     const dayOfWeek = getDay(date)
-    if (dayOfWeek === 6) return SATURDAY_TIME_SLOTS // Saturday
+    if (dayOfWeek === 6) return SATURDAY_TIME_SLOTS
     return TIME_SLOTS
   }
 
   const handleDateSelect = (date: Date) => {
     if (isDateDisabled(date)) return
-    onSelect(date, null) // Reset time when date changes
+    onSelect(date, null)
   }
 
   const handleTimeSelect = (time: string) => {
@@ -53,56 +64,63 @@ export function DateTimeStep({ selectedDate, selectedTime, onSelect }: DateTimeS
 
   return (
     <div>
-      <div className="mb-6 text-center">
-        <h2 className="font-serif text-xl font-semibold text-foreground">
+      {/* Heading */}
+      <div className="mb-8 text-center">
+        <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.28em] text-[#b08b57]">
+          Appointment Time
+        </p>
+
+        <h2 className="text-2xl font-semibold tracking-tight text-[#111111]">
           Pick a Date & Time
         </h2>
-        <p className="mt-1 text-sm text-muted-foreground">
+
+        <p className="mt-2 text-sm leading-6 text-[#6b5f55]">
           Choose your preferred appointment slot
         </p>
       </div>
 
       {/* Calendar */}
-      <div className="rounded-xl border border-border/50 bg-background p-4">
-        {/* Month navigation */}
-        <div className="mb-4 flex items-center justify-between">
-          <Button
-            variant="ghost"
-            size="icon"
+      <div className="rounded-[24px] border border-[#d8c2a6]/40 bg-white/80 p-5 shadow-sm">
+        {/* Month Navigation */}
+        <div className="mb-5 flex items-center justify-between">
+          <button
             onClick={() => setCurrentMonth(prev => addMonths(prev, -1))}
             disabled={isSameMonth(currentMonth, new Date())}
+            className="rounded-full border border-[#eadfce] bg-[#faf7f3] p-2 hover:bg-white disabled:opacity-40"
           >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          <h3 className="font-serif text-base font-medium">
+            <ChevronLeft className="h-4 w-4 text-[#111111]" />
+          </button>
+
+          <h3 className="text-base font-semibold tracking-tight text-[#111111]">
             {format(currentMonth, 'MMMM yyyy')}
           </h3>
-          <Button
-            variant="ghost"
-            size="icon"
+
+          <button
             onClick={() => setCurrentMonth(prev => addMonths(prev, 1))}
+            className="rounded-full border border-[#eadfce] bg-[#faf7f3] p-2 hover:bg-white"
           >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
+            <ChevronRight className="h-4 w-4 text-[#111111]" />
+          </button>
         </div>
 
-        {/* Weekday headers */}
-        <div className="mb-2 grid grid-cols-7 gap-1">
+        {/* Weekdays */}
+        <div className="mb-3 grid grid-cols-7 gap-1">
           {WEEKDAYS.map(day => (
-            <div key={day} className="py-1 text-center text-xs font-medium text-muted-foreground">
+            <div
+              key={day}
+              className="py-1 text-center text-[11px] font-medium uppercase tracking-wide text-[#8a7f75]"
+            >
               {day}
             </div>
           ))}
         </div>
 
-        {/* Calendar grid */}
+        {/* Days */}
         <div className="grid grid-cols-7 gap-1">
-          {/* Empty cells for days before the first of the month */}
           {Array.from({ length: firstDayOfMonth }).map((_, i) => (
             <div key={`empty-${i}`} className="aspect-square" />
           ))}
 
-          {/* Days of the month */}
           {days.map(day => {
             const disabled = isDateDisabled(day)
             const selected = selectedDate && isSameDay(day, selectedDate)
@@ -115,11 +133,10 @@ export function DateTimeStep({ selectedDate, selectedTime, onSelect }: DateTimeS
                 disabled={disabled}
                 className={cn(
                   'aspect-square rounded-lg text-sm font-medium transition-all',
-                  disabled && 'cursor-not-allowed text-muted-foreground/50',
-                  !disabled && !selected && 'hover:bg-muted',
-                  selected && 'bg-primary text-primary-foreground',
-                  today && !selected && 'ring-1 ring-primary',
-                  !disabled && !selected && 'text-foreground'
+                  disabled && 'cursor-not-allowed text-[#c7bfb6]',
+                  selected && 'bg-[#111111] text-white',
+                  today && !selected && 'ring-1 ring-[#b08b57]',
+                  !disabled && !selected && 'text-[#111111] hover:bg-[#faf7f3]'
                 )}
               >
                 {format(day, 'd')}
@@ -131,20 +148,21 @@ export function DateTimeStep({ selectedDate, selectedTime, onSelect }: DateTimeS
 
       {/* Time slots */}
       {selectedDate && (
-        <div className="mt-4">
-          <h4 className="mb-3 text-sm font-medium text-foreground">
+        <div className="mt-6">
+          <h4 className="mb-3 text-sm font-medium text-[#111111]">
             Available times for {format(selectedDate, 'EEEE, MMMM d')}
           </h4>
-          <div className="grid grid-cols-4 gap-2">
+
+          <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
             {timeSlots.map(time => (
               <button
                 key={time}
                 onClick={() => handleTimeSelect(time)}
                 className={cn(
-                  'rounded-lg border-2 px-2 py-2.5 text-sm font-medium transition-all',
+                  'rounded-full border px-3 py-2 text-sm font-medium transition-all',
                   selectedTime === time
-                    ? 'border-primary bg-primary/5 text-foreground'
-                    : 'border-border/50 text-muted-foreground hover:border-primary/50 hover:text-foreground'
+                    ? 'border-[#111111] bg-[#111111] text-white'
+                    : 'border-[#eadfce] bg-white text-[#6b5f55] hover:border-[#d8c2a6] hover:bg-[#faf7f3]'
                 )}
               >
                 {time}
@@ -155,9 +173,9 @@ export function DateTimeStep({ selectedDate, selectedTime, onSelect }: DateTimeS
       )}
 
       {/* Note */}
-      <div className="mt-4 flex items-start gap-2 rounded-lg bg-muted/50 p-3">
-        <Info className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
-        <p className="text-xs text-muted-foreground">
+      <div className="mt-6 flex items-start gap-3 rounded-[20px] border border-[#d8c2a6]/40 bg-[#fcf8f3] p-4">
+        <Info className="mt-0.5 h-4 w-4 shrink-0 text-[#b08b57]" />
+        <p className="text-xs leading-relaxed text-[#6b5f55] sm:text-sm">
           Appointments are secured once the deposit is received.
         </p>
       </div>
