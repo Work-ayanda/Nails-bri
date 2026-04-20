@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronLeft, ChevronRight, Check, X } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import type { BookingData, Service, AddOn, ClientDetails, NailPreferences } from '@/lib/types'
 import { SERVICES, ADD_ONS } from '@/lib/data'
@@ -67,11 +67,7 @@ const initialBookingData: BookingData = {
   createdAt: new Date()
 }
 
-interface BookingWizardProps {
-  onClose: () => void
-}
-
-export function BookingWizard({ onClose }: BookingWizardProps) {
+export function BookingWizard() {
   const [currentStep, setCurrentStep] = useState(1)
   const [bookingData, setBookingData] = useState<BookingData>(initialBookingData)
   const [isComplete, setIsComplete] = useState(false)
@@ -92,7 +88,6 @@ export function BookingWizard({ onClose }: BookingWizardProps) {
     setBookingData(prev => {
       const newData = { ...prev, ...updates }
       
-      // Recalculate totals if service or addons changed
       if ('selectedService' in updates || 'selectedAddOns' in updates || 'referral' in updates) {
         const totals = calculateTotals(
           newData.selectedService,
@@ -173,10 +168,16 @@ export function BookingWizard({ onClose }: BookingWizardProps) {
     setIsComplete(true)
   }
 
+  const handleRebook = () => {
+    setBookingData(initialBookingData)
+    setCurrentStep(1)
+    setIsComplete(false)
+  }
+
   const canProceed = () => {
     switch (currentStep) {
       case 1: return bookingData.selectedService !== null
-      case 2: return true // Add-ons are optional
+      case 2: return true
       case 3: return bookingData.selectedDate !== null && bookingData.selectedTime !== null
       case 4: 
         const { fullName, mobile, email, nailPreferences } = bookingData.clientDetails
@@ -185,10 +186,10 @@ export function BookingWizard({ onClose }: BookingWizardProps) {
                email.trim() !== '' &&
                nailPreferences.shape !== '' &&
                nailPreferences.length !== ''
-      case 5: return true // Inspiration is optional
-      case 6: return true // Referral is optional
-      case 7: return true // Summary review
-      case 8: return true // Payment
+      case 5: return true
+      case 6: return true
+      case 7: return true
+      case 8: return true
       default: return false
     }
   }
@@ -209,148 +210,133 @@ export function BookingWizard({ onClose }: BookingWizardProps) {
     return (
       <ConfirmationState 
         bookingData={bookingData} 
-        onClose={onClose}
-        onRebook={() => {
-          setBookingData(initialBookingData)
-          setCurrentStep(1)
-          setIsComplete(false)
-        }}
+        onClose={handleRebook}
+        onRebook={handleRebook}
       />
     )
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm overflow-hidden">
-      <div className="h-full flex flex-col">
-        {/* Header */}
-        <header className="flex-shrink-0 border-b border-border bg-card/80 backdrop-blur-md">
-          <div className="flex items-center justify-between px-4 py-3">
-            <button 
-              onClick={onClose}
-              className="p-2 -ml-2 hover:bg-secondary rounded-full transition-colors"
-              aria-label="Close booking"
-            >
-              <X className="w-5 h-5 text-muted-foreground" />
-            </button>
-            <h2 className="font-serif text-lg font-medium text-foreground">Book Appointment</h2>
-            <div className="w-9" /> {/* Spacer for centering */}
-          </div>
-          
-          {/* Progress Steps */}
-          <div className="px-4 pb-3">
-            <div className="flex items-center justify-between gap-1">
-              {STEPS.map((step, index) => (
-                <div key={step.id} className="flex-1 flex flex-col items-center">
-                  <div className={`
-                    w-full h-1 rounded-full transition-all duration-300
-                    ${currentStep > step.id ? 'bg-primary' : currentStep === step.id ? 'bg-primary' : 'bg-border'}
-                  `} />
-                  <span className={`
-                    mt-1 text-[10px] font-sans hidden sm:block
-                    ${currentStep >= step.id ? 'text-foreground' : 'text-muted-foreground'}
-                  `}>
-                    {step.shortTitle}
-                  </span>
-                </div>
-              ))}
+    <div className="bg-card rounded-3xl border border-border shadow-xl overflow-hidden max-w-2xl mx-auto">
+      {/* Header */}
+      <div className="border-b border-border bg-muted/30 p-4">
+        <h3 className="font-serif text-lg font-semibold text-foreground text-center mb-4">
+          Book Your Appointment
+        </h3>
+        
+        {/* Progress Steps */}
+        <div className="flex items-center justify-between gap-1">
+          {STEPS.map((step) => (
+            <div key={step.id} className="flex-1 flex flex-col items-center">
+              <div className={`
+                w-full h-1.5 rounded-full transition-all duration-300
+                ${currentStep > step.id ? 'bg-primary' : currentStep === step.id ? 'bg-primary' : 'bg-border'}
+              `} />
+              <span className={`
+                mt-1.5 text-[10px] font-sans hidden sm:block
+                ${currentStep >= step.id ? 'text-foreground font-medium' : 'text-muted-foreground'}
+              `}>
+                {step.shortTitle}
+              </span>
             </div>
-            <p className="text-xs text-muted-foreground font-sans mt-2 text-center sm:hidden">
-              Step {currentStep} of {STEPS.length}: {STEPS[currentStep - 1].title}
-            </p>
-          </div>
-        </header>
+          ))}
+        </div>
+        <p className="text-xs text-muted-foreground font-sans mt-3 text-center sm:hidden">
+          Step {currentStep} of {STEPS.length}: {STEPS[currentStep - 1].title}
+        </p>
+      </div>
 
-        {/* Content */}
-        <main className="flex-1 overflow-y-auto">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentStep}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.2 }}
-              className="h-full"
-            >
-              {currentStep === 1 && (
-                <ServiceSelection
-                  services={SERVICES}
-                  selectedService={bookingData.selectedService}
-                  onSelect={handleServiceSelect}
-                />
-              )}
-              {currentStep === 2 && (
-                <AddOnSelection
-                  addOns={ADD_ONS}
-                  selectedAddOns={bookingData.selectedAddOns}
-                  onToggle={handleAddOnToggle}
-                />
-              )}
-              {currentStep === 3 && (
-                <DateTimeSelection
-                  selectedDate={bookingData.selectedDate}
-                  selectedTime={bookingData.selectedTime}
-                  onDateSelect={handleDateSelect}
-                  onTimeSelect={handleTimeSelect}
-                  serviceDuration={bookingData.selectedService?.durationMinutes || 60}
-                />
-              )}
-              {currentStep === 4 && (
-                <ClientDetailsForm
-                  clientDetails={bookingData.clientDetails}
-                  onUpdate={handleClientDetailsUpdate}
-                  onNailPreferencesUpdate={handleNailPreferencesUpdate}
-                />
-              )}
-              {currentStep === 5 && (
-                <InspirationUpload
-                  inspiration={bookingData.inspiration}
-                  onUpdate={handleInspirationUpdate}
-                />
-              )}
-              {currentStep === 6 && (
-                <ReferralStep
-                  referral={bookingData.referral}
-                  onUpdate={handleReferralUpdate}
-                />
-              )}
-              {currentStep === 7 && (
-                <BookingSummary
-                  bookingData={bookingData}
-                />
-              )}
-              {currentStep === 8 && (
-                <PaymentStep
-                  bookingData={bookingData}
-                  onReceiptUpdate={handleReceiptUpdate}
-                  onComplete={handlePaymentComplete}
-                />
-              )}
-            </motion.div>
-          </AnimatePresence>
-        </main>
-
-        {/* Footer Navigation */}
-        <footer className="flex-shrink-0 border-t border-border bg-card/80 backdrop-blur-md p-4">
-          <div className="flex gap-3 max-w-lg mx-auto">
-            {currentStep > 1 && (
-              <Button
-                variant="outline"
-                onClick={handleBack}
-                className="flex-1 h-12 font-sans"
-              >
-                <ChevronLeft className="w-4 h-4 mr-1" />
-                Back
-              </Button>
+      {/* Content */}
+      <div className="min-h-[500px] max-h-[60vh] overflow-y-auto">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentStep}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.2 }}
+          >
+            {currentStep === 1 && (
+              <ServiceSelection
+                services={SERVICES}
+                selectedService={bookingData.selectedService}
+                onSelect={handleServiceSelect}
+              />
             )}
+            {currentStep === 2 && (
+              <AddOnSelection
+                addOns={ADD_ONS}
+                selectedAddOns={bookingData.selectedAddOns}
+                onToggle={handleAddOnToggle}
+              />
+            )}
+            {currentStep === 3 && (
+              <DateTimeSelection
+                selectedDate={bookingData.selectedDate}
+                selectedTime={bookingData.selectedTime}
+                onDateSelect={handleDateSelect}
+                onTimeSelect={handleTimeSelect}
+                serviceDuration={bookingData.selectedService?.durationMinutes || 60}
+              />
+            )}
+            {currentStep === 4 && (
+              <ClientDetailsForm
+                clientDetails={bookingData.clientDetails}
+                onUpdate={handleClientDetailsUpdate}
+                onNailPreferencesUpdate={handleNailPreferencesUpdate}
+              />
+            )}
+            {currentStep === 5 && (
+              <InspirationUpload
+                inspiration={bookingData.inspiration}
+                onUpdate={handleInspirationUpdate}
+              />
+            )}
+            {currentStep === 6 && (
+              <ReferralStep
+                referral={bookingData.referral}
+                onUpdate={handleReferralUpdate}
+              />
+            )}
+            {currentStep === 7 && (
+              <BookingSummary
+                bookingData={bookingData}
+              />
+            )}
+            {currentStep === 8 && (
+              <PaymentStep
+                bookingData={bookingData}
+                onReceiptUpdate={handleReceiptUpdate}
+                onComplete={handlePaymentComplete}
+              />
+            )}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {/* Footer Navigation */}
+      <div className="border-t border-border bg-muted/30 p-4">
+        <div className="flex gap-3 max-w-lg mx-auto">
+          {currentStep > 1 && (
+            <Button
+              variant="outline"
+              onClick={handleBack}
+              className="flex-1 h-12 font-sans"
+            >
+              <ChevronLeft className="w-4 h-4 mr-1" />
+              Back
+            </Button>
+          )}
+          {currentStep < 8 && (
             <Button
               onClick={handleNext}
               disabled={!canProceed()}
               className="flex-1 h-12 bg-primary text-primary-foreground hover:bg-primary/90 font-sans"
             >
-              {currentStep === STEPS.length ? (
+              {currentStep === 7 ? (
                 <>
                   <Check className="w-4 h-4 mr-1" />
-                  Confirm Booking
+                  Proceed to Payment
                 </>
               ) : (
                 <>
@@ -359,8 +345,8 @@ export function BookingWizard({ onClose }: BookingWizardProps) {
                 </>
               )}
             </Button>
-          </div>
-        </footer>
+          )}
+        </div>
       </div>
     </div>
   )

@@ -329,3 +329,41 @@ export const CONTACT_INFO = {
   email: 'hello@nailsatbris.co.za',
   prefillMessage: "Hi Bridget, I've just submitted a booking request with Nails @ Bri's and would like to confirm my appointment."
 }
+
+// ========================
+// EXPORTS FOR COMPONENTS
+// ========================
+export const services = SERVICES.map(s => ({
+  ...s,
+  icon: s.category === 'manicure' ? '💅' : s.category === 'art' ? '🎨' : '✨',
+  includes: [s.description],
+  popular: s.id === 'acrylic-full' || s.id === 'gel-polish'
+}))
+
+export const testimonials = TESTIMONIALS.map(t => ({
+  ...t,
+  content: t.text,
+  service: 'Acrylic Full Set',
+  avatar: `https://i.pravatar.cc/150?u=${t.id}`
+}))
+
+export const faqs = FAQS.map(f => ({
+  question: f.question,
+  answer: f.answer
+}))
+
+export const businessInfo = {
+  address: '123 Beauty Lane, Sandton, Johannesburg',
+  phone: CONTACT_INFO.whatsapp,
+  email: CONTACT_INFO.email,
+  hours: [
+    { days: 'Monday - Friday', hours: '9:00 AM - 6:00 PM' },
+    { days: 'Saturday', hours: '8:00 AM - 3:00 PM' },
+    { days: 'Sunday', hours: 'Closed' }
+  ],
+  social: {
+    instagram: 'https://instagram.com/nailsatbris',
+    tiktok: 'https://tiktok.com/@nailsatbris'
+  },
+  whatsapp: CONTACT_INFO.whatsappLink
+}

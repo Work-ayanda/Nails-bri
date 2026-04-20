@@ -33,7 +33,7 @@ export interface ClientDetails {
   fullName: string
   mobile: string
   email: string
-  preferredContact: 'whatsapp' | 'email'
+  preferredContact: 'whatsapp' | 'email' | 'sms'
   specialNotes: string
   nailPreferences: NailPreferences
 }

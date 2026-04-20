@@ -85,7 +85,7 @@
 }
 
 @theme inline {
-  --font-sans: 'Cormorant Garamond', 'Georgia', serif;
+  --font-sans: 'Montserrat', 'system-ui', sans-serif;
   --font-serif: 'Cormorant Garamond', 'Georgia', serif;
   --font-mono: 'Geist Mono', 'Geist Mono Fallback';
   --color-background: var(--background);
