@@ -1,223 +1,203 @@
-import type { Service, AddOn, Testimonial, FAQ, AdminStats } from './types'
+import type { Service, Addon } from './types'
 
 // ========================
-// PROMO BANNER CONFIG
+// SERVICES BY CATEGORY
 // ========================
-export const PROMO_BANNER = {
-  enabled: true,
-  message: "Midweek luxury sets now available — Book your Tuesday or Wednesday appointment",
-  link: "#booking"
-}
-
-// ========================
-// SERVICES
-// ========================
-export const SERVICES: Service[] = [
-  {
-    id: 'classic-gel',
-    name: 'Classic Gel Overlay',
-    description: 'A timeless gel overlay for natural, glossy nails with lasting shine and protection.',
-    duration: '1h 15m',
-    durationMinutes: 75,
-    price: 250,
-    deposit: 100,
-    category: 'manicure'
-  },
+export const HANDS_SERVICES: Service[] = [
   {
     id: 'acrylic-full',
     name: 'Acrylic Full Set',
-    description: 'Sculpted acrylic extensions for length and strength. Includes shaping and polish.',
-    duration: '2h',
-    durationMinutes: 120,
+    description: 'Full acrylic nail enhancement with your choice of shape and length',
+    duration: 120,
     price: 350,
-    deposit: 100,
-    category: 'manicure'
+    category: 'hands',
+    deposit: 100
   },
   {
     id: 'acrylic-fill',
     name: 'Acrylic Fill',
-    description: 'Maintenance fill for existing acrylic nails. Keeps your set looking fresh and flawless.',
-    duration: '1h 30m',
-    durationMinutes: 90,
+    description: 'Maintenance fill for existing acrylic nails',
+    duration: 90,
     price: 280,
-    deposit: 100,
-    category: 'maintenance'
+    category: 'hands',
+    deposit: 100
+  },
+  {
+    id: 'gel-overlay',
+    name: 'Classic Gel Overlay',
+    description: 'Protective gel coating over natural nails',
+    duration: 75,
+    price: 250,
+    category: 'hands',
+    deposit: 100
   },
   {
     id: 'gel-polish',
     name: 'Gel Polish',
-    description: 'Long-lasting gel colour application on natural nails. Chip-free shine for weeks.',
-    duration: '45m',
-    durationMinutes: 45,
+    description: 'Long-lasting gel polish application',
+    duration: 45,
     price: 180,
-    deposit: 100,
-    category: 'manicure'
-  },
-  {
-    id: 'nail-art',
-    name: 'Nail Art Add-On',
-    description: 'Custom nail art designs to elevate your set. From minimalist to statement pieces.',
-    duration: '20m',
-    durationMinutes: 20,
-    price: 50,
-    deposit: 50,
-    category: 'art'
+    category: 'hands',
+    deposit: 100
   },
   {
     id: 'soak-off',
     name: 'Soak Off',
-    description: 'Gentle removal of gel or acrylic with nail care treatment to restore natural nails.',
-    duration: '30m',
-    durationMinutes: 30,
+    description: 'Safe removal of existing gel or acrylic',
+    duration: 30,
     price: 80,
-    deposit: 50,
-    category: 'maintenance'
+    category: 'hands',
+    deposit: 100
   },
   {
     id: 'nail-repair',
     name: 'Nail Repair',
-    description: 'Professional repair for broken or damaged nails. Restore your set seamlessly.',
-    duration: '15m',
-    durationMinutes: 15,
+    description: 'Repair for broken or damaged nails',
+    duration: 15,
     price: 30,
-    deposit: 30,
-    category: 'maintenance'
+    category: 'hands',
+    deposit: 100,
+    priceNote: 'per nail'
   },
   {
-    id: 'luxury-manicure',
-    name: 'Luxury Manicure',
-    description: 'An indulgent manicure experience with exfoliation, massage, and premium polish.',
-    duration: '1h',
-    durationMinutes: 60,
+    id: 'nail-art-basic',
+    name: 'Nail Art Basic',
+    description: 'Simple nail art designs and accents',
+    duration: 20,
+    price: 50,
+    category: 'hands',
+    deposit: 100
+  }
+]
+
+export const TOES_SERVICES: Service[] = [
+  {
+    id: 'gel-toes',
+    name: 'Gel Toes',
+    description: 'Gel polish application for toes',
+    duration: 45,
+    price: 180,
+    category: 'toes',
+    deposit: 100
+  },
+  {
+    id: 'french-toes',
+    name: 'French Toes',
+    description: 'Classic French tip pedicure',
+    duration: 60,
     price: 220,
-    deposit: 100,
-    category: 'manicure'
+    category: 'toes',
+    deposit: 100
+  },
+  {
+    id: 'basic-pedicure',
+    name: 'Basic Pedicure',
+    description: 'Essential pedicure with nail shaping and polish',
+    duration: 60,
+    price: 250,
+    category: 'toes',
+    deposit: 100
+  },
+  {
+    id: 'luxury-pedicure',
+    name: 'Luxury Pedicure',
+    description: 'Premium pedicure with exfoliation and massage',
+    duration: 80,
+    price: 320,
+    category: 'toes',
+    deposit: 100
+  },
+  {
+    id: 'toe-nail-art',
+    name: 'Toe Nail Art',
+    description: 'Decorative nail art for toes',
+    duration: 20,
+    price: 50,
+    category: 'toes',
+    deposit: 100
   }
 ]
 
 // ========================
 // ADD-ONS
 // ========================
-export const ADD_ONS: AddOn[] = [
+export const ADDONS: Addon[] = [
   {
     id: 'french-tip',
     name: 'French Tip',
-    description: 'Classic white tip for timeless elegance',
-    price: 40,
-    durationMinutes: 15
+    price: 50,
+    duration: 15,
+    description: 'Classic French tip finish'
   },
   {
     id: 'chrome-finish',
     name: 'Chrome Finish',
-    description: 'Mirror-like metallic finish',
-    price: 60,
-    durationMinutes: 10
+    price: 80,
+    duration: 10,
+    description: 'Mirror-like chrome powder finish'
   },
   {
     id: 'gems',
-    name: 'Gems & Rhinestones',
-    description: 'Sparkling accents for extra glamour',
-    price: 50,
-    durationMinutes: 15
+    name: 'Gems / Rhinestones',
+    price: 60,
+    duration: 15,
+    description: 'Crystal embellishments'
   },
   {
     id: '3d-art',
     name: '3D Art',
-    description: 'Dimensional nail art designs',
-    price: 80,
-    durationMinutes: 25
+    price: 100,
+    duration: 30,
+    description: 'Dimensional nail art designs'
+  },
+  {
+    id: 'ombre',
+    name: 'Ombre',
+    price: 70,
+    duration: 20,
+    description: 'Gradient color blend effect'
   },
   {
     id: 'extra-length',
     name: 'Extra Length',
-    description: 'Extended nail length beyond standard',
     price: 50,
-    durationMinutes: 15
+    duration: 15,
+    description: 'Additional nail length'
   },
   {
     id: 'addon-soak-off',
     name: 'Soak Off',
-    description: 'Remove previous gel/acrylic',
-    price: 60,
-    durationMinutes: 20
+    price: 50,
+    duration: 20,
+    description: 'Removal of existing product'
   },
   {
-    id: 'addon-repair',
-    name: 'Nail Repair',
-    description: 'Fix broken or damaged nails',
+    id: 'repair-per-nail',
+    name: 'Repair Per Nail',
     price: 30,
-    durationMinutes: 10
-  }
-]
-
-// ========================
-// TESTIMONIALS
-// ========================
-export const TESTIMONIALS: Testimonial[] = [
-  {
-    id: '1',
-    name: 'Thandiwe M.',
-    text: 'Absolutely loved my nails. Beautiful finish and amazing service. Bri really takes her time to perfect every detail.',
-    rating: 5
+    duration: 10,
+    description: 'Individual nail repair'
   },
   {
-    id: '2',
-    name: 'Jessica K.',
-    text: 'The booking process was so easy and professional. My nails have never looked better!',
-    rating: 5
+    id: 'cuticle-care',
+    name: 'Cuticle Care Upgrade',
+    price: 40,
+    duration: 10,
+    description: 'Premium cuticle treatment'
   },
   {
-    id: '3',
-    name: 'Nomvula S.',
-    text: 'Luxury experience from start to finish. The attention to detail is incredible. Highly recommend!',
-    rating: 5
-  },
-  {
-    id: '4',
-    name: 'Aisha P.',
-    text: 'The attention to detail was amazing. My chrome set lasted three weeks without a single chip.',
-    rating: 5
-  }
-]
-
-// ========================
-// FAQ
-// ========================
-export const FAQS: FAQ[] = [
-  {
-    question: 'How much is the deposit?',
-    answer: 'A minimum deposit of R100 is required to secure every booking. This goes toward your final appointment total.'
-  },
-  {
-    question: 'Is the deposit refundable?',
-    answer: 'Deposits are non-refundable for late cancellations (less than 24 hours notice) or missed appointments. With 24+ hours notice, your deposit can be transferred to a rescheduled appointment.'
-  },
-  {
-    question: 'Can I reschedule my appointment?',
-    answer: 'Yes, rescheduling is subject to availability. Please notify us at least 24 hours in advance to transfer your deposit to a new date.'
-  },
-  {
-    question: 'Can I send an inspiration picture?',
-    answer: 'Absolutely! We encourage you to share inspiration photos during booking or via WhatsApp. This helps us prepare for your appointment and ensures we achieve your desired look.'
-  },
-  {
-    question: 'How will I be contacted after booking?',
-    answer: 'You\'ll receive confirmation via your preferred contact method (WhatsApp or email) within 24 hours of booking. We\'ll confirm your appointment details and answer any questions.'
-  },
-  {
-    question: 'Do you accept referral or promo codes?',
-    answer: 'Yes! Enter any valid referral or promotional codes during the booking process. Applicable discounts will be applied to your final balance.'
-  },
-  {
-    question: 'Can I rebook easily as a returning client?',
-    answer: 'Yes, returning clients can quickly rebook using their previous preferences. We\'re also launching a loyalty programme with exclusive perks soon!'
+    id: 'luxury-finish',
+    name: 'Luxury Finish',
+    price: 60,
+    duration: 15,
+    description: 'Premium top coat with extra shine'
   }
 ]
 
 // ========================
 // BUSINESS HOURS
 // ========================
-export const BUSINESS_HOURS = {
+export const BUSINESS_HOURS: Record<string, { open: string; close: string; closed: boolean }> = {
   monday: { open: '09:00', close: '18:00', closed: false },
   tuesday: { open: '09:00', close: '18:00', closed: false },
   wednesday: { open: '09:00', close: '18:00', closed: false },
@@ -227,22 +207,19 @@ export const BUSINESS_HOURS = {
   sunday: { open: '', close: '', closed: true }
 }
 
-// ========================
-// REFERRAL SOURCES
-// ========================
-export const REFERRAL_SOURCES = [
-  'Instagram',
-  'TikTok',
-  'Friend referral',
-  'Influencer',
-  'Google search',
-  'Returning client',
-  'Walk-in / existing customer',
-  'Other'
+export const TIME_SLOTS = [
+  '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
+  '12:00', '12:30', '13:00', '13:30', '14:00', '14:30',
+  '15:00', '15:30', '16:00', '16:30', '17:00', '17:30'
+]
+
+export const SATURDAY_TIME_SLOTS = [
+  '08:00', '08:30', '09:00', '09:30', '10:00', '10:30',
+  '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30'
 ]
 
 // ========================
-// NAIL SHAPES
+// NAIL PREFERENCES
 // ========================
 export const NAIL_SHAPES = [
   { value: 'square', label: 'Square' },
@@ -252,69 +229,11 @@ export const NAIL_SHAPES = [
   { value: 'round', label: 'Round' }
 ]
 
-// ========================
-// NAIL LENGTHS
-// ========================
 export const NAIL_LENGTHS = [
   { value: 'short', label: 'Short' },
   { value: 'medium', label: 'Medium' },
   { value: 'long', label: 'Long' },
   { value: 'xl', label: 'XL' }
-]
-
-// ========================
-// MOCK ADMIN STATS
-// ========================
-export const MOCK_ADMIN_STATS: AdminStats = {
-  upcomingBookings: 12,
-  depositsPending: 3,
-  confirmedAppointments: 8,
-  returningClients: 45,
-  referralBookings: 7
-}
-
-// ========================
-// GALLERY CATEGORIES
-// ========================
-export const GALLERY_CATEGORIES = [
-  { id: 'nude', title: 'Nude Sets', description: 'Elegant neutral tones' },
-  { id: 'bold', title: 'Bold Sets', description: 'Statement colours' },
-  { id: 'art', title: 'Nail Art', description: 'Creative designs' },
-  { id: 'glam', title: 'Soft Glam', description: 'Subtle sparkle' }
-]
-
-// ========================
-// LOYALTY BENEFITS
-// ========================
-export const LOYALTY_BENEFITS = [
-  {
-    title: 'Priority Booking',
-    description: 'Get first access to appointment slots'
-  },
-  {
-    title: 'Exclusive Offers',
-    description: 'Seasonal discounts just for loyal clients'
-  },
-  {
-    title: 'Special Perks',
-    description: 'Complimentary add-ons and upgrades'
-  },
-  {
-    title: 'Easy Rebooking',
-    description: 'Save preferences for faster booking'
-  }
-]
-
-// ========================
-// POLICIES
-// ========================
-export const POLICIES = [
-  'A minimum deposit of R100 is required to secure every booking',
-  'Deposits go toward the final appointment total',
-  'Deposits are non-refundable for late cancellations or missed appointments',
-  'Clients arriving more than 15 minutes late may need to be rescheduled',
-  'Please send inspiration photos in advance where possible',
-  'Rescheduling is subject to availability'
 ]
 
 // ========================
@@ -331,39 +250,16 @@ export const CONTACT_INFO = {
 }
 
 // ========================
-// EXPORTS FOR COMPONENTS
+// POLICIES
 // ========================
-export const services = SERVICES.map(s => ({
-  ...s,
-  icon: s.category === 'manicure' ? '💅' : s.category === 'art' ? '🎨' : '✨',
-  includes: [s.description],
-  popular: s.id === 'acrylic-full' || s.id === 'gel-polish'
-}))
+export const POLICIES = [
+  'Minimum R100 deposit required to secure your appointment',
+  'Deposits go toward the final total',
+  'Late cancellations or missed appointments may forfeit the deposit',
+  'Arrivals more than 15 minutes late may require rescheduling'
+]
 
-export const testimonials = TESTIMONIALS.map(t => ({
-  ...t,
-  content: t.text,
-  service: 'Acrylic Full Set',
-  avatar: `https://i.pravatar.cc/150?u=${t.id}`
-}))
-
-export const faqs = FAQS.map(f => ({
-  question: f.question,
-  answer: f.answer
-}))
-
-export const businessInfo = {
-  address: '123 Beauty Lane, Sandton, Johannesburg',
-  phone: CONTACT_INFO.whatsapp,
-  email: CONTACT_INFO.email,
-  hours: [
-    { days: 'Monday - Friday', hours: '9:00 AM - 6:00 PM' },
-    { days: 'Saturday', hours: '8:00 AM - 3:00 PM' },
-    { days: 'Sunday', hours: 'Closed' }
-  ],
-  social: {
-    instagram: 'https://instagram.com/nailsatbris',
-    tiktok: 'https://tiktok.com/@nailsatbris'
-  },
-  whatsapp: CONTACT_INFO.whatsappLink
-}
+// ========================
+// MINIMUM DEPOSIT
+// ========================
+export const MINIMUM_DEPOSIT = 100

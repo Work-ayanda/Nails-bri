@@ -1,102 +1,123 @@
-// Booking Types for Nails @ Bri's
+export type Category = 'hands' | 'toes'
 
 export interface Service {
   id: string
   name: string
   description: string
-  duration: string
-  durationMinutes: number
+  duration: number // in minutes
   price: number
+  category: Category
   deposit: number
-  category: 'manicure' | 'pedicure' | 'art' | 'maintenance'
+  priceNote?: string
 }
 
-export interface AddOn {
+export interface Addon {
   id: string
   name: string
-  description: string
   price: number
-  durationMinutes?: number
+  duration: number
+  description: string
 }
 
-export interface TimeSlot {
-  time: string
-  available: boolean
-}
+export type NailShape = 'square' | 'coffin' | 'almond' | 'stiletto' | 'round' | ''
+export type NailLength = 'short' | 'medium' | 'long' | 'xl' | ''
+export type ContactMethod = 'whatsapp' | 'email'
 
 export interface NailPreferences {
-  shape: 'square' | 'coffin' | 'almond' | 'stiletto' | 'round' | ''
-  length: 'short' | 'medium' | 'long' | 'xl' | ''
+  shape: NailShape
+  length: NailLength
 }
 
 export interface ClientDetails {
   fullName: string
   mobile: string
   email: string
-  preferredContact: 'whatsapp' | 'email' | 'sms'
+  preferredContact: ContactMethod
   specialNotes: string
   nailPreferences: NailPreferences
 }
 
-export interface InspirationUpload {
-  file: File | null
-  preview: string | null
+export interface InspirationData {
+  photos: string[] // base64 or object URLs
   description: string
 }
 
-export interface ReferralInfo {
-  referralCode: string
-  promoCode: string
-  source: string
-  applied: boolean
-  discount: number
-}
-
-export interface ReceiptUpload {
-  file: File | null
-  preview: string | null
-  uploaded: boolean
-}
-
 export interface BookingData {
-  selectedService: Service | null
-  selectedAddOns: AddOn[]
-  selectedDate: Date | null
-  selectedTime: string | null
+  category: Category | null
+  service: Service | null
+  addons: Addon[]
+  date: Date | null
+  time: string | null
   clientDetails: ClientDetails
-  inspiration: InspirationUpload
-  referral: ReferralInfo
-  receipt: ReceiptUpload
+  inspiration: InspirationData
   subtotal: number
   deposit: number
   remainingBalance: number
-  status: 'pending' | 'confirmed' | 'completed' | 'cancelled'
-  createdAt: Date
+  status: 'pending' | 'confirmed' | 'cancelled'
 }
 
-export interface Testimonial {
-  id: string
-  name: string
-  text: string
-  rating: number
+export type BookingStep = 
+  | 'category'
+  | 'service'
+  | 'addons'
+  | 'datetime'
+  | 'details'
+  | 'inspiration'
+  | 'review'
+  | 'deposit'
+  | 'confirmation'
+
+export const BOOKING_STEPS: { id: BookingStep; label: string; number: number }[] = [
+  { id: 'category', label: 'Category', number: 1 },
+  { id: 'service', label: 'Service', number: 2 },
+  { id: 'addons', label: 'Add-ons', number: 3 },
+  { id: 'datetime', label: 'Date & Time', number: 4 },
+  { id: 'details', label: 'Details', number: 5 },
+  { id: 'inspiration', label: 'Inspiration', number: 6 },
+  { id: 'review', label: 'Review', number: 7 },
+  { id: 'deposit', label: 'Deposit', number: 8 }
+]
+
+// Helper to get initial booking state
+export const getInitialBookingData = (): BookingData => ({
+  category: null,
+  service: null,
+  addons: [],
+  date: null,
+  time: null,
+  clientDetails: {
+    fullName: '',
+    mobile: '',
+    email: '',
+    preferredContact: 'whatsapp',
+    specialNotes: '',
+    nailPreferences: {
+      shape: '',
+      length: ''
+    }
+  },
+  inspiration: {
+    photos: [],
+    description: ''
+  },
+  subtotal: 0,
+  deposit: 100,
+  remainingBalance: 0,
+  status: 'pending'
+})
+
+// Notification placeholder functions for future integration
+export const sendOwnerNotification = async (booking: BookingData): Promise<void> => {
+  // TODO: Implement owner notification (email/WhatsApp)
+  console.log('Owner notification placeholder:', booking)
 }
 
-export interface GalleryItem {
-  id: string
-  title: string
-  category: string
-  image: string
+export const sendClientConfirmation = async (booking: BookingData): Promise<void> => {
+  // TODO: Implement client confirmation email
+  console.log('Client confirmation placeholder:', booking)
 }
 
-export interface FAQ {
-  question: string
-  answer: string
-}
-
-export interface AdminStats {
-  upcomingBookings: number
-  depositsPending: number
-  confirmedAppointments: number
-  returningClients: number
-  referralBookings: number
+export const sendWhatsAppNotification = async (booking: BookingData): Promise<void> => {
+  // TODO: Implement WhatsApp notification
+  console.log('WhatsApp notification placeholder:', booking)
 }

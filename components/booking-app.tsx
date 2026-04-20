@@ -1,0 +1,224 @@
+'use client'
+
+import { useState, useCallback, useMemo } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { Card } from '@/components/ui/card'
+import { ProgressStepper } from '@/components/booking/progress-stepper'
+import { CategoryStep } from '@/components/booking/steps/category-step'
+import { ServiceStep } from '@/components/booking/steps/service-step'
+import { AddonsStep } from '@/components/booking/steps/addons-step'
+import { DateTimeStep } from '@/components/booking/steps/datetime-step'
+import { DetailsStep } from '@/components/booking/steps/details-step'
+import { InspirationStep } from '@/components/booking/steps/inspiration-step'
+import { ReviewStep } from '@/components/booking/steps/review-step'
+import { DepositStep } from '@/components/booking/steps/deposit-step'
+import { ConfirmationStep } from '@/components/booking/steps/confirmation-step'
+import { StickyNavigation } from '@/components/booking/sticky-navigation'
+import { 
+  type BookingData, 
+  type BookingStep, 
+  type Category,
+  type Service,
+  type Addon,
+  type ClientDetails,
+  type InspirationData,
+  BOOKING_STEPS,
+  getInitialBookingData 
+} from '@/lib/types'
+import { MINIMUM_DEPOSIT } from '@/lib/data'
+
+export function BookingApp() {
+  const [currentStep, setCurrentStep] = useState<BookingStep>('category')
+  const [booking, setBooking] = useState<BookingData>(getInitialBookingData())
+
+  // Calculate totals whenever booking changes
+  const totals = useMemo(() => {
+    const servicePrice = booking.service?.price ?? 0
+    const addonsPrice = booking.addons.reduce((sum, addon) => sum + addon.price, 0)
+    const subtotal = servicePrice + addonsPrice
+    const deposit = MINIMUM_DEPOSIT
+    const remainingBalance = Math.max(0, subtotal - deposit)
+    return { subtotal, deposit, remainingBalance }
+  }, [booking.service, booking.addons])
+
+  // Calculate total duration
+  const totalDuration = useMemo(() => {
+    const serviceDuration = booking.service?.duration ?? 0
+    const addonsDuration = booking.addons.reduce((sum, addon) => sum + addon.duration, 0)
+    return serviceDuration + addonsDuration
+  }, [booking.service, booking.addons])
+
+  // Update booking with totals
+  const bookingWithTotals: BookingData = {
+    ...booking,
+    ...totals
+  }
+
+  // Step navigation
+  const currentStepIndex = BOOKING_STEPS.findIndex(s => s.id === currentStep)
+  
+  const goToNextStep = useCallback(() => {
+    const nextIndex = currentStepIndex + 1
+    if (nextIndex < BOOKING_STEPS.length) {
+      setCurrentStep(BOOKING_STEPS[nextIndex].id)
+    } else if (currentStep === 'deposit') {
+      setCurrentStep('confirmation')
+    }
+  }, [currentStepIndex, currentStep])
+
+  const goToPreviousStep = useCallback(() => {
+    const prevIndex = currentStepIndex - 1
+    if (prevIndex >= 0) {
+      setCurrentStep(BOOKING_STEPS[prevIndex].id)
+    }
+  }, [currentStepIndex])
+
+  // Update handlers
+  const setCategory = useCallback((category: Category) => {
+    setBooking(prev => ({ ...prev, category, service: null }))
+  }, [])
+
+  const setService = useCallback((service: Service) => {
+    setBooking(prev => ({ ...prev, service }))
+  }, [])
+
+  const setAddons = useCallback((addons: Addon[]) => {
+    setBooking(prev => ({ ...prev, addons }))
+  }, [])
+
+  const setDateTime = useCallback((date: Date | null, time: string | null) => {
+    setBooking(prev => ({ ...prev, date, time }))
+  }, [])
+
+  const setClientDetails = useCallback((clientDetails: ClientDetails) => {
+    setBooking(prev => ({ ...prev, clientDetails }))
+  }, [])
+
+  const setInspiration = useCallback((inspiration: InspirationData) => {
+    setBooking(prev => ({ ...prev, inspiration }))
+  }, [])
+
+  const resetBooking = useCallback(() => {
+    setBooking(getInitialBookingData())
+    setCurrentStep('category')
+  }, [])
+
+  // Validation for each step
+  const canProceed = useMemo(() => {
+    switch (currentStep) {
+      case 'category':
+        return booking.category !== null
+      case 'service':
+        return booking.service !== null
+      case 'addons':
+        return true // Add-ons are optional
+      case 'datetime':
+        return booking.date !== null && booking.time !== null
+      case 'details':
+        return (
+          booking.clientDetails.fullName.trim() !== '' &&
+          booking.clientDetails.mobile.trim() !== '' &&
+          booking.clientDetails.email.trim() !== ''
+        )
+      case 'inspiration':
+        return true // Inspiration is optional
+      case 'review':
+        return true
+      case 'deposit':
+        return true
+      default:
+        return false
+    }
+  }, [currentStep, booking])
+
+  // Show confirmation instead of regular step
+  if (currentStep === 'confirmation') {
+    return (
+      <Card className="overflow-hidden border-border/50 bg-card shadow-lg">
+        <ConfirmationStep 
+          booking={bookingWithTotals} 
+          onReset={resetBooking}
+          totalDuration={totalDuration}
+        />
+      </Card>
+    )
+  }
+
+  return (
+    <Card className="overflow-hidden border-border/50 bg-card shadow-lg">
+      <ProgressStepper currentStep={currentStep} />
+      
+      <div className="min-h-[400px] p-4 md:p-6">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentStep}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.2 }}
+          >
+            {currentStep === 'category' && (
+              <CategoryStep 
+                selected={booking.category} 
+                onSelect={setCategory} 
+              />
+            )}
+            {currentStep === 'service' && (
+              <ServiceStep
+                category={booking.category!}
+                selected={booking.service}
+                onSelect={setService}
+              />
+            )}
+            {currentStep === 'addons' && (
+              <AddonsStep
+                selected={booking.addons}
+                onSelect={setAddons}
+              />
+            )}
+            {currentStep === 'datetime' && (
+              <DateTimeStep
+                selectedDate={booking.date}
+                selectedTime={booking.time}
+                onSelect={setDateTime}
+              />
+            )}
+            {currentStep === 'details' && (
+              <DetailsStep
+                details={booking.clientDetails}
+                onChange={setClientDetails}
+              />
+            )}
+            {currentStep === 'inspiration' && (
+              <InspirationStep
+                inspiration={booking.inspiration}
+                onChange={setInspiration}
+              />
+            )}
+            {currentStep === 'review' && (
+              <ReviewStep
+                booking={bookingWithTotals}
+                totalDuration={totalDuration}
+              />
+            )}
+            {currentStep === 'deposit' && (
+              <DepositStep
+                booking={bookingWithTotals}
+                onConfirm={goToNextStep}
+              />
+            )}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      <StickyNavigation
+        currentStep={currentStep}
+        canProceed={canProceed}
+        onBack={goToPreviousStep}
+        onNext={goToNextStep}
+        isFirstStep={currentStepIndex === 0}
+        isLastStep={currentStep === 'deposit'}
+      />
+    </Card>
+  )
+}
