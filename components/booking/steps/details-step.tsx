@@ -3,16 +3,17 @@
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { 
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue 
+  SelectValue,
 } from '@/components/ui/select'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import type { ClientDetails, ContactMethod } from '@/lib/types'
 import { NAIL_SHAPES, NAIL_LENGTHS } from '@/lib/data'
+import { cn } from '@/lib/utils'
 
 interface DetailsStepProps {
   details: ClientDetails
@@ -32,105 +33,123 @@ export function DetailsStep({ details, onChange }: DetailsStepProps) {
       ...details,
       nailPreferences: {
         ...details.nailPreferences,
-        [field]: value
-      }
+        [field]: value,
+      },
     })
   }
 
+  const inputStyle =
+    'h-12 rounded-xl border border-[#eadfce] bg-white/80 text-[#111111] placeholder:text-[#a89c90] focus:border-[#d8c2a6] focus:ring-0'
+
   return (
     <div>
-      <div className="mb-6 text-center">
-        <h2 className="font-serif text-xl font-semibold text-foreground">
+      {/* Heading */}
+      <div className="mb-8 text-center">
+        <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.28em] text-[#b08b57]">
+          Your Details
+        </p>
+
+        <h2 className="text-2xl font-semibold tracking-tight text-[#111111]">
           Your Details
         </h2>
-        <p className="mt-1 text-sm text-muted-foreground">
+
+        <p className="mt-2 text-sm leading-6 text-[#6b5f55]">
           Tell us a bit about yourself
         </p>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-5">
         {/* Full Name */}
         <div className="space-y-2">
-          <Label htmlFor="fullName" className="text-sm font-medium">
-            Full Name <span className="text-destructive">*</span>
+          <Label className="text-sm font-medium text-[#111111]">
+            Full Name <span className="text-[#b08b57]">*</span>
           </Label>
           <Input
-            id="fullName"
             value={details.fullName}
             onChange={(e) => updateField('fullName', e.target.value)}
             placeholder="Enter your full name"
-            className="h-12"
+            className={inputStyle}
           />
         </div>
 
-        {/* Mobile Number */}
+        {/* Mobile */}
         <div className="space-y-2">
-          <Label htmlFor="mobile" className="text-sm font-medium">
-            Mobile Number <span className="text-destructive">*</span>
+          <Label className="text-sm font-medium text-[#111111]">
+            Mobile Number <span className="text-[#b08b57]">*</span>
           </Label>
           <Input
-            id="mobile"
             type="tel"
             value={details.mobile}
             onChange={(e) => updateField('mobile', e.target.value)}
             placeholder="+27 XX XXX XXXX"
-            className="h-12"
+            className={inputStyle}
           />
         </div>
 
         {/* Email */}
         <div className="space-y-2">
-          <Label htmlFor="email" className="text-sm font-medium">
-            Email Address <span className="text-destructive">*</span>
+          <Label className="text-sm font-medium text-[#111111]">
+            Email Address <span className="text-[#b08b57]">*</span>
           </Label>
           <Input
-            id="email"
             type="email"
             value={details.email}
             onChange={(e) => updateField('email', e.target.value)}
             placeholder="your@email.com"
-            className="h-12"
+            className={inputStyle}
           />
         </div>
 
-        {/* Preferred Contact Method */}
+        {/* Contact Method */}
         <div className="space-y-3">
-          <Label className="text-sm font-medium">
+          <Label className="text-sm font-medium text-[#111111]">
             Preferred Contact Method
           </Label>
+
           <RadioGroup
             value={details.preferredContact}
-            onValueChange={(value) => updateField('preferredContact', value as ContactMethod)}
-            className="flex gap-4"
+            onValueChange={(value) =>
+              updateField('preferredContact', value as ContactMethod)
+            }
+            className="grid grid-cols-2 gap-3"
           >
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="whatsapp" id="whatsapp" />
-              <Label htmlFor="whatsapp" className="cursor-pointer text-sm font-normal">
-                WhatsApp
-              </Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="email" id="email-contact" />
-              <Label htmlFor="email-contact" className="cursor-pointer text-sm font-normal">
-                Email
-              </Label>
-            </div>
+            {['whatsapp', 'email'].map((method) => {
+              const isSelected = details.preferredContact === method
+
+              return (
+                <label
+                  key={method}
+                  className={cn(
+                    'flex cursor-pointer items-center justify-center rounded-xl border px-4 py-3 text-sm transition-all',
+                    isSelected
+                      ? 'border-[#111111] bg-[#111111] text-white'
+                      : 'border-[#eadfce] bg-white text-[#6b5f55] hover:border-[#d8c2a6] hover:bg-[#faf7f3]'
+                  )}
+                >
+                  <RadioGroupItem value={method} className="hidden" />
+                  {method === 'whatsapp' ? 'WhatsApp' : 'Email'}
+                </label>
+              )
+            })}
           </RadioGroup>
         </div>
 
         {/* Nail Preferences */}
-        <div className="rounded-xl border border-border/50 bg-muted/30 p-4">
-          <h3 className="mb-3 text-sm font-medium text-foreground">
+        <div className="rounded-[20px] border border-[#d8c2a6]/40 bg-[#fcf8f3] p-4">
+          <h3 className="mb-4 text-sm font-medium text-[#111111]">
             Nail Preferences (Optional)
           </h3>
+
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-2">
-              <Label className="text-xs text-muted-foreground">Shape</Label>
+              <Label className="text-xs text-[#8a7f75]">Shape</Label>
               <Select
                 value={details.nailPreferences.shape || undefined}
-                onValueChange={(value) => updateNailPreference('shape', value)}
+                onValueChange={(value) =>
+                  updateNailPreference('shape', value)
+                }
               >
-                <SelectTrigger className="h-10">
+                <SelectTrigger className="h-11 rounded-xl border border-[#eadfce] bg-white">
                   <SelectValue placeholder="Select shape" />
                 </SelectTrigger>
                 <SelectContent>
@@ -142,13 +161,16 @@ export function DetailsStep({ details, onChange }: DetailsStepProps) {
                 </SelectContent>
               </Select>
             </div>
+
             <div className="space-y-2">
-              <Label className="text-xs text-muted-foreground">Length</Label>
+              <Label className="text-xs text-[#8a7f75]">Length</Label>
               <Select
                 value={details.nailPreferences.length || undefined}
-                onValueChange={(value) => updateNailPreference('length', value)}
+                onValueChange={(value) =>
+                  updateNailPreference('length', value)
+                }
               >
-                <SelectTrigger className="h-10">
+                <SelectTrigger className="h-11 rounded-xl border border-[#eadfce] bg-white">
                   <SelectValue placeholder="Select length" />
                 </SelectTrigger>
                 <SelectContent>
@@ -163,18 +185,17 @@ export function DetailsStep({ details, onChange }: DetailsStepProps) {
           </div>
         </div>
 
-        {/* Special Notes */}
+        {/* Notes */}
         <div className="space-y-2">
-          <Label htmlFor="notes" className="text-sm font-medium">
+          <Label className="text-sm font-medium text-[#111111]">
             Special Notes (Optional)
           </Label>
           <Textarea
-            id="notes"
             value={details.specialNotes}
             onChange={(e) => updateField('specialNotes', e.target.value)}
             placeholder="Any allergies, sensitivities, or special requests..."
             rows={3}
-            className="resize-none"
+            className="resize-none rounded-xl border border-[#eadfce] bg-white/80 text-[#111111] placeholder:text-[#a89c90]"
           />
         </div>
       </div>
