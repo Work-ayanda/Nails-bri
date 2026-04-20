@@ -6,19 +6,24 @@ import { POLICIES } from '@/lib/data'
 
 export function PolicyCard() {
   return (
-    <Card className="mt-6 border-border/50 bg-muted/30">
-      <CardContent className="p-4">
+    <Card className="mt-6 rounded-[24px] border border-[#d8c2a6]/40 bg-white/70 shadow-sm backdrop-blur">
+      <CardContent className="p-5">
         <div className="flex items-start gap-3">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10">
-            <Info className="h-4 w-4 text-primary" />
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#d8c2a6]/40 bg-[#faf7f3]">
+            <Info className="h-4 w-4 text-[#b08b57]" />
           </div>
+
           <div>
-            <h3 className="mb-2 font-serif text-sm font-medium text-foreground">
+            <h3 className="mb-2 text-sm font-medium text-[#111111]">
               Booking Policies
             </h3>
-            <ul className="space-y-1.5">
+
+            <ul className="space-y-2">
               {POLICIES.map((policy, index) => (
-                <li key={index} className="text-xs leading-relaxed text-muted-foreground">
+                <li
+                  key={index}
+                  className="text-xs leading-relaxed text-[#6b5f55] sm:text-sm"
+                >
                   {policy}
                 </li>
               ))}
