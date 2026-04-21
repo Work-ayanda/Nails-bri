@@ -33,6 +33,7 @@ const shellClassName =
 export function BookingApp() {
   const [currentStep, setCurrentStep] = useState<BookingStep>('category')
   const [booking, setBooking] = useState<BookingData>(getInitialBookingData())
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const totals = useMemo(() => {
     const servicePrice = booking.service?.price ?? 0
@@ -62,10 +63,8 @@ export function BookingApp() {
 
     if (nextIndex < BOOKING_STEPS.length) {
       setCurrentStep(BOOKING_STEPS[nextIndex].id)
-    } else if (currentStep === 'deposit') {
-      setCurrentStep('confirmation')
     }
-  }, [currentStepIndex, currentStep])
+  }, [currentStepIndex])
 
   const goToPreviousStep = useCallback(() => {
     const prevIndex = currentStepIndex - 1
@@ -73,6 +72,37 @@ export function BookingApp() {
       setCurrentStep(BOOKING_STEPS[prevIndex].id)
     }
   }, [currentStepIndex])
+
+  const handleDepositConfirm = useCallback(async () => {
+    try {
+      setIsSubmitting(true)
+
+      const payload = {
+        ...bookingWithTotals,
+        date: bookingWithTotals.date ? bookingWithTotals.date.toISOString() : null,
+      }
+
+      const response = await fetch('/api/send-booking', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to send confirmation email')
+      }
+
+      setCurrentStep('confirmation')
+    } catch (error) {
+      console.error('Booking submission error:', error)
+      alert('Your booking was received, but the confirmation email could not be sent.')
+      setCurrentStep('confirmation')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }, [bookingWithTotals])
 
   const setCategory = useCallback((category: Category) => {
     setBooking((prev) => ({ ...prev, category, service: null }))
@@ -104,6 +134,8 @@ export function BookingApp() {
   }, [])
 
   const canProceed = useMemo(() => {
+    if (isSubmitting) return false
+
     switch (currentStep) {
       case 'category':
         return booking.category !== null
@@ -128,7 +160,7 @@ export function BookingApp() {
       default:
         return false
     }
-  }, [currentStep, booking])
+  }, [currentStep, booking, isSubmitting])
 
   if (currentStep === 'confirmation') {
     return (
@@ -201,7 +233,10 @@ export function BookingApp() {
             )}
 
             {currentStep === 'deposit' && (
-              <DepositStep booking={bookingWithTotals} onConfirm={goToNextStep} />
+              <DepositStep
+                booking={bookingWithTotals}
+                onConfirm={handleDepositConfirm}
+              />
             )}
           </motion.div>
         </AnimatePresence>
@@ -211,7 +246,7 @@ export function BookingApp() {
         currentStep={currentStep}
         canProceed={canProceed}
         onBack={goToPreviousStep}
-        onNext={goToNextStep}
+        onNext={currentStep === 'deposit' ? handleDepositConfirm : goToNextStep}
         isFirstStep={currentStepIndex === 0}
         isLastStep={currentStep === 'deposit'}
       />
