@@ -151,6 +151,76 @@ export const TOES_SERVICES: Service[] = [
 
 export const ADDONS: Addon[] = [
   {
+    id: 'french-tip',
+    name: 'French Tip',
+    price: 50,
+    duration: 15,
+    description: 'Classic French tip finish',
+  },
+  {
+    id: 'chrome-finish',
+    name: 'Chrome Finish',
+    price: 80,
+    duration: 10,
+    description: 'Mirror-like chrome powder finish',
+  },
+  {
+    id: 'gems',
+    name: 'Gems / Rhinestones',
+    price: 60,
+    duration: 15,
+    description: 'Crystal embellishments',
+  },
+  {
+    id: '3d-art',
+    name: '3D Art',
+    price: 100,
+    duration: 30,
+    description: 'Dimensional nail art designs',
+  },
+  {
+    id: 'ombre-addon',
+    name: 'Ombré Finish',
+    price: 70,
+    duration: 20,
+    description: 'Gradient colour blend effect',
+  },
+  {
+    id: 'extra-length',
+    name: 'Extra Length',
+    price: 50,
+    duration: 15,
+    description: 'Additional nail length',
+  },
+  {
+    id: 'addon-soak-off',
+    name: 'Soak Off',
+    price: 50,
+    duration: 20,
+    description: 'Removal of existing product',
+  },
+  {
+    id: 'repair-per-nail',
+    name: 'Repair Per Nail',
+    price: 30,
+    duration: 10,
+    description: 'Individual nail repair',
+  },
+  {
+    id: 'cuticle-care',
+    name: 'Cuticle Care Upgrade',
+    price: 40,
+    duration: 10,
+    description: 'Premium cuticle treatment',
+  },
+  {
+    id: 'luxury-finish',
+    name: 'Luxury Finish',
+    price: 60,
+    duration: 15,
+    description: 'Premium top coat with extra shine',
+  },
+  {
     id: 'nail-art-2',
     name: 'Nail Art — 2 Nails',
     price: 40,
@@ -212,14 +282,14 @@ export const BUSINESS_HOURS: Record<
 }
 
 export const TIME_SLOTS = [
-  '09:00','09:30','10:00','10:30','11:00','11:30',
-  '12:00','12:30','13:00','13:30','14:00','14:30',
-  '15:00','15:30','16:00','16:30','17:00','17:30'
+  '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
+  '12:00', '12:30', '13:00', '13:30', '14:00', '14:30',
+  '15:00', '15:30', '16:00', '16:30', '17:00', '17:30',
 ]
 
 export const SATURDAY_TIME_SLOTS = [
-  '08:00','08:30','09:00','09:30','10:00','10:30',
-  '11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30'
+  '08:00', '08:30', '09:00', '09:30', '10:00', '10:30',
+  '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30',
 ]
 
 // ========================
