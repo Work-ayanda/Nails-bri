@@ -27,12 +27,18 @@ interface DateTimeStepProps {
   selectedDate: Date | null
   selectedTime: string | null
   onSelect: (date: Date | null, time: string | null) => void
+  refreshToken?: number
 }
 
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 const DAY_NAMES = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
 
-export function DateTimeStep({ selectedDate, selectedTime, onSelect }: DateTimeStepProps) {
+export function DateTimeStep({
+  selectedDate,
+  selectedTime,
+  onSelect,
+  refreshToken = 0,
+}: DateTimeStepProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [bookedSlots, setBookedSlots] = useState<BookedSlot[]>([])
   const [loadingSlots, setLoadingSlots] = useState(true)
@@ -67,23 +73,14 @@ export function DateTimeStep({ selectedDate, selectedTime, onSelect }: DateTimeS
   }, [loadBookedSlots])
 
   useEffect(() => {
+    loadBookedSlots(true)
+  }, [refreshToken, loadBookedSlots])
+
+  useEffect(() => {
     if (selectedDate) {
       loadBookedSlots(true)
     }
   }, [selectedDate, loadBookedSlots])
-
-  useEffect(() => {
-    const handleVisibility = () => {
-      if (document.visibilityState === 'visible') {
-        loadBookedSlots(true)
-      }
-    }
-
-    document.addEventListener('visibilitychange', handleVisibility)
-    return () => {
-      document.removeEventListener('visibilitychange', handleVisibility)
-    }
-  }, [loadBookedSlots])
 
   const days = useMemo(() => {
     const start = startOfMonth(currentMonth)
