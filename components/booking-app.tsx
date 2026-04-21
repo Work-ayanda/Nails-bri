@@ -60,7 +60,6 @@ export function BookingApp() {
 
   const goToNextStep = useCallback(() => {
     const nextIndex = currentStepIndex + 1
-
     if (nextIndex < BOOKING_STEPS.length) {
       setCurrentStep(BOOKING_STEPS[nextIndex].id)
     }
@@ -84,20 +83,21 @@ export function BookingApp() {
 
       const response = await fetch('/api/send-booking', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       })
 
+      const data = await response.json()
+      console.log('API RESPONSE:', data)
+
       if (!response.ok) {
-        throw new Error('Failed to send confirmation email')
+        throw new Error(data?.message || 'Email failed')
       }
 
       setCurrentStep('confirmation')
-    } catch (error) {
-      console.error('Booking submission error:', error)
-      alert('Your booking was received, but the confirmation email could not be sent.')
+    } catch (err) {
+      console.error('BOOKING SUBMISSION ERROR:', err)
+      alert('Booking saved but email failed')
       setCurrentStep('confirmation')
     } finally {
       setIsSubmitting(false)
