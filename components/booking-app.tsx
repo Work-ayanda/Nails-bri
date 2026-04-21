@@ -34,6 +34,7 @@ export function BookingApp() {
   const [currentStep, setCurrentStep] = useState<BookingStep>('category')
   const [booking, setBooking] = useState<BookingData>(getInitialBookingData())
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [slotsRefreshToken, setSlotsRefreshToken] = useState(0)
 
   const totals = useMemo(() => {
     const servicePrice = booking.service?.price ?? 0
@@ -91,13 +92,15 @@ export function BookingApp() {
       console.log('API RESPONSE:', data)
 
       if (!response.ok) {
-        throw new Error(data?.message || 'Email failed')
+        throw new Error(data?.message || 'Booking failed')
       }
 
+      setSlotsRefreshToken((prev) => prev + 1)
       setCurrentStep('confirmation')
     } catch (err) {
       console.error('BOOKING SUBMISSION ERROR:', err)
       alert('Booking saved but email failed')
+      setSlotsRefreshToken((prev) => prev + 1)
       setCurrentStep('confirmation')
     } finally {
       setIsSubmitting(false)
@@ -208,6 +211,7 @@ export function BookingApp() {
                 selectedDate={booking.date}
                 selectedTime={booking.time}
                 onSelect={setDateTime}
+                refreshToken={slotsRefreshToken}
               />
             )}
 
