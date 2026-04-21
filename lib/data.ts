@@ -151,18 +151,46 @@ export const TOES_SERVICES: Service[] = [
 
 export const ADDONS: Addon[] = [
   {
-    id: 'nail-art',
-    name: 'Nail Art (per nail)',
-    price: 20,
+    id: 'nail-art-2',
+    name: 'Nail Art — 2 Nails',
+    price: 40,
     duration: 10,
-    description: 'Detailed nail art charged per nail',
+    description: 'Detailed nail art on 2 nails',
   },
   {
-    id: 'extreme-nail-art',
-    name: 'Extreme Nail Art',
-    price: 35,
+    id: 'nail-art-4',
+    name: 'Nail Art — 4 Nails',
+    price: 80,
+    duration: 20,
+    description: 'Detailed nail art on 4 nails',
+  },
+  {
+    id: 'nail-art-full',
+    name: 'Nail Art — Full Set',
+    price: 200,
+    duration: 45,
+    description: 'Detailed nail art across the full set',
+  },
+  {
+    id: 'extreme-art-2',
+    name: 'Extreme Nail Art — 2 Nails',
+    price: 70,
     duration: 15,
-    description: 'Advanced statement nail art',
+    description: 'Advanced statement nail art on 2 nails',
+  },
+  {
+    id: 'extreme-art-4',
+    name: 'Extreme Nail Art — 4 Nails',
+    price: 140,
+    duration: 30,
+    description: 'Advanced statement nail art on 4 nails',
+  },
+  {
+    id: 'extreme-art-full',
+    name: 'Extreme Nail Art — Full Set',
+    price: 350,
+    duration: 60,
+    description: 'Advanced statement nail art across the full set',
   },
 ]
 
