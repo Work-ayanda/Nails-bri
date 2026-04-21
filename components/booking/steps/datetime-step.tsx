@@ -16,7 +16,12 @@ import {
   getDay,
 } from 'date-fns'
 import { cn } from '@/lib/utils'
-import { BUSINESS_HOURS, TIME_SLOTS, SATURDAY_TIME_SLOTS } from '@/lib/data'
+import {
+  BUSINESS_HOURS,
+  TIME_SLOTS,
+  SATURDAY_TIME_SLOTS,
+  BOOKED_SLOTS, // 👈 NEW
+} from '@/lib/data'
 
 interface DateTimeStepProps {
   selectedDate: Date | null
@@ -47,8 +52,17 @@ export function DateTimeStep({ selectedDate, selectedTime, onSelect }: DateTimeS
 
   const getTimeSlotsForDate = (date: Date): string[] => {
     const dayOfWeek = getDay(date)
-    if (dayOfWeek === 6) return SATURDAY_TIME_SLOTS
-    return TIME_SLOTS
+    const baseSlots = dayOfWeek === 6 ? SATURDAY_TIME_SLOTS : TIME_SLOTS
+
+    const selectedDateString = format(date, 'yyyy-MM-dd')
+
+    // 🔥 REMOVE BOOKED TIMES
+    return baseSlots.filter(
+      (time) =>
+        !BOOKED_SLOTS.some(
+          (slot) => slot.date === selectedDateString && slot.time === time
+        )
+    )
   }
 
   const handleDateSelect = (date: Date) => {
@@ -153,22 +167,28 @@ export function DateTimeStep({ selectedDate, selectedTime, onSelect }: DateTimeS
             Available times for {format(selectedDate, 'EEEE, MMMM d')}
           </h4>
 
-          <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
-            {timeSlots.map(time => (
-              <button
-                key={time}
-                onClick={() => handleTimeSelect(time)}
-                className={cn(
-                  'rounded-full border px-3 py-2 text-sm font-medium transition-all',
-                  selectedTime === time
-                    ? 'border-[#111111] bg-[#111111] text-white'
-                    : 'border-[#eadfce] bg-white text-[#6b5f55] hover:border-[#d8c2a6] hover:bg-[#faf7f3]'
-                )}
-              >
-                {time}
-              </button>
-            ))}
-          </div>
+          {timeSlots.length === 0 ? (
+            <p className="text-sm text-[#8a7f75]">
+              No available slots for this day.
+            </p>
+          ) : (
+            <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
+              {timeSlots.map(time => (
+                <button
+                  key={time}
+                  onClick={() => handleTimeSelect(time)}
+                  className={cn(
+                    'rounded-full border px-3 py-2 text-sm font-medium transition-all',
+                    selectedTime === time
+                      ? 'border-[#111111] bg-[#111111] text-white'
+                      : 'border-[#eadfce] bg-white text-[#6b5f55] hover:border-[#d8c2a6] hover:bg-[#faf7f3]'
+                  )}
+                >
+                  {time}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
