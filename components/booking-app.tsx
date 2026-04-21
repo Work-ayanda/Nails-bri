@@ -146,7 +146,7 @@ export function BookingApp() {
     <Card className={shellClassName}>
       <ProgressStepper currentStep={currentStep} />
 
-      <div className="min-h-[420px] px-5 py-6 md:px-6">
+      <div className="min-h-[420px] px-5 py-6 pb-36 md:px-6 md:pb-6">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentStep}
