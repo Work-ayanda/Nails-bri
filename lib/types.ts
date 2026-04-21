@@ -19,7 +19,14 @@ export interface Addon {
   description: string
 }
 
-export type NailShape = 'square' | 'coffin' | 'almond' | 'stiletto' | 'round' | ''
+export type NailShape =
+  | 'square'
+  | 'coffin'
+  | 'almond'
+  | 'stiletto'
+  | 'round'
+  | ''
+
 export type NailLength = 'short' | 'medium' | 'long' | 'xl' | ''
 export type ContactMethod = 'whatsapp' | 'email'
 
@@ -56,7 +63,13 @@ export interface BookingData {
   status: 'pending' | 'confirmed' | 'cancelled'
 }
 
-export type BookingStep = 
+export interface BookedSlot {
+  date: string // format: yyyy-MM-dd
+  time: string
+  status?: 'pending' | 'confirmed' | 'blocked'
+}
+
+export type BookingStep =
   | 'category'
   | 'service'
   | 'addons'
@@ -75,7 +88,7 @@ export const BOOKING_STEPS: { id: BookingStep; label: string; number: number }[]
   { id: 'details', label: 'Details', number: 5 },
   { id: 'inspiration', label: 'Inspiration', number: 6 },
   { id: 'review', label: 'Review', number: 7 },
-  { id: 'deposit', label: 'Deposit', number: 8 }
+  { id: 'deposit', label: 'Deposit', number: 8 },
 ]
 
 // Helper to get initial booking state
@@ -93,17 +106,17 @@ export const getInitialBookingData = (): BookingData => ({
     specialNotes: '',
     nailPreferences: {
       shape: '',
-      length: ''
-    }
+      length: '',
+    },
   },
   inspiration: {
     photos: [],
-    description: ''
+    description: '',
   },
   subtotal: 0,
   deposit: 100,
   remainingBalance: 0,
-  status: 'pending'
+  status: 'pending',
 })
 
 // Notification placeholder functions for future integration
