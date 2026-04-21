@@ -53,7 +53,7 @@ export async function POST(req: Request) {
     // Email to client
     await resend.emails.send({
       from: "Nails @ Bri's <onboarding@resend.dev>",
-      to: clientDetails.email,
+      to: 'delivered@resend.dev',
       subject: "Booking Confirmation — Nails @ Bri's",
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #111;">
@@ -79,7 +79,7 @@ export async function POST(req: Request) {
     // Email to owner
     await resend.emails.send({
       from: "Nails @ Bri's <onboarding@resend.dev>",
-      to: 'nailsbybri.bookings@gmail.com',
+      to: 'delivered@resend.dev',
       subject: 'New Booking Request — Nails @ Bri’s',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #111;">
