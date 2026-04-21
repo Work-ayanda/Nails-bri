@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { ChevronLeft, ChevronRight, Info } from 'lucide-react'
 import {
   format,
@@ -20,8 +20,8 @@ import {
   BUSINESS_HOURS,
   TIME_SLOTS,
   SATURDAY_TIME_SLOTS,
-  BOOKED_SLOTS, // 👈 NEW
 } from '@/lib/data'
+import type { BookedSlot } from '@/lib/types'
 
 interface DateTimeStepProps {
   selectedDate: Date | null
@@ -34,6 +34,26 @@ const DAY_NAMES = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'frid
 
 export function DateTimeStep({ selectedDate, selectedTime, onSelect }: DateTimeStepProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date())
+  const [bookedSlots, setBookedSlots] = useState<BookedSlot[]>([])
+  const [loadingSlots, setLoadingSlots] = useState(true)
+
+  useEffect(() => {
+    const loadBookedSlots = async () => {
+      try {
+        setLoadingSlots(true)
+        const response = await fetch('/api/booked-slots', { cache: 'no-store' })
+        const data = await response.json()
+        setBookedSlots(Array.isArray(data) ? data : [])
+      } catch (error) {
+        console.error('Failed to load booked slots:', error)
+        setBookedSlots([])
+      } finally {
+        setLoadingSlots(false)
+      }
+    }
+
+    loadBookedSlots()
+  }, [])
 
   const days = useMemo(() => {
     const start = startOfMonth(currentMonth)
@@ -53,13 +73,11 @@ export function DateTimeStep({ selectedDate, selectedTime, onSelect }: DateTimeS
   const getTimeSlotsForDate = (date: Date): string[] => {
     const dayOfWeek = getDay(date)
     const baseSlots = dayOfWeek === 6 ? SATURDAY_TIME_SLOTS : TIME_SLOTS
-
     const selectedDateString = format(date, 'yyyy-MM-dd')
 
-    // 🔥 REMOVE BOOKED TIMES
     return baseSlots.filter(
       (time) =>
-        !BOOKED_SLOTS.some(
+        !bookedSlots.some(
           (slot) => slot.date === selectedDateString && slot.time === time
         )
     )
@@ -78,7 +96,6 @@ export function DateTimeStep({ selectedDate, selectedTime, onSelect }: DateTimeS
 
   return (
     <div>
-      {/* Heading */}
       <div className="mb-8 text-center">
         <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.28em] text-[#b08b57]">
           Appointment Time
@@ -93,12 +110,10 @@ export function DateTimeStep({ selectedDate, selectedTime, onSelect }: DateTimeS
         </p>
       </div>
 
-      {/* Calendar */}
       <div className="rounded-[24px] border border-[#d8c2a6]/40 bg-white/80 p-5 shadow-sm">
-        {/* Month Navigation */}
         <div className="mb-5 flex items-center justify-between">
           <button
-            onClick={() => setCurrentMonth(prev => addMonths(prev, -1))}
+            onClick={() => setCurrentMonth((prev) => addMonths(prev, -1))}
             disabled={isSameMonth(currentMonth, new Date())}
             className="rounded-full border border-[#eadfce] bg-[#faf7f3] p-2 hover:bg-white disabled:opacity-40"
           >
@@ -110,16 +125,15 @@ export function DateTimeStep({ selectedDate, selectedTime, onSelect }: DateTimeS
           </h3>
 
           <button
-            onClick={() => setCurrentMonth(prev => addMonths(prev, 1))}
+            onClick={() => setCurrentMonth((prev) => addMonths(prev, 1))}
             className="rounded-full border border-[#eadfce] bg-[#faf7f3] p-2 hover:bg-white"
           >
             <ChevronRight className="h-4 w-4 text-[#111111]" />
           </button>
         </div>
 
-        {/* Weekdays */}
         <div className="mb-3 grid grid-cols-7 gap-1">
-          {WEEKDAYS.map(day => (
+          {WEEKDAYS.map((day) => (
             <div
               key={day}
               className="py-1 text-center text-[11px] font-medium uppercase tracking-wide text-[#8a7f75]"
@@ -129,13 +143,12 @@ export function DateTimeStep({ selectedDate, selectedTime, onSelect }: DateTimeS
           ))}
         </div>
 
-        {/* Days */}
         <div className="grid grid-cols-7 gap-1">
           {Array.from({ length: firstDayOfMonth }).map((_, i) => (
             <div key={`empty-${i}`} className="aspect-square" />
           ))}
 
-          {days.map(day => {
+          {days.map((day) => {
             const disabled = isDateDisabled(day)
             const selected = selectedDate && isSameDay(day, selectedDate)
             const today = isToday(day)
@@ -160,20 +173,21 @@ export function DateTimeStep({ selectedDate, selectedTime, onSelect }: DateTimeS
         </div>
       </div>
 
-      {/* Time slots */}
       {selectedDate && (
         <div className="mt-6">
           <h4 className="mb-3 text-sm font-medium text-[#111111]">
             Available times for {format(selectedDate, 'EEEE, MMMM d')}
           </h4>
 
-          {timeSlots.length === 0 ? (
+          {loadingSlots ? (
+            <p className="text-sm text-[#8a7f75]">Loading available slots...</p>
+          ) : timeSlots.length === 0 ? (
             <p className="text-sm text-[#8a7f75]">
               No available slots for this day.
             </p>
           ) : (
             <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
-              {timeSlots.map(time => (
+              {timeSlots.map((time) => (
                 <button
                   key={time}
                   onClick={() => handleTimeSelect(time)}
@@ -192,7 +206,6 @@ export function DateTimeStep({ selectedDate, selectedTime, onSelect }: DateTimeS
         </div>
       )}
 
-      {/* Note */}
       <div className="mt-6 flex items-start gap-3 rounded-[20px] border border-[#d8c2a6]/40 bg-[#fcf8f3] p-4">
         <Info className="mt-0.5 h-4 w-4 shrink-0 text-[#b08b57]" />
         <p className="text-xs leading-relaxed text-[#6b5f55] sm:text-sm">
