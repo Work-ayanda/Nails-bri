@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useMemo, useEffect } from 'react'
-import { ChevronLeft, ChevronRight, Info } from 'lucide-react'
+import { useState, useMemo, useEffect, useCallback } from 'react'
+import { ChevronLeft, ChevronRight, Info, RefreshCw } from 'lucide-react'
 import {
   format,
   addMonths,
@@ -36,24 +36,54 @@ export function DateTimeStep({ selectedDate, selectedTime, onSelect }: DateTimeS
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [bookedSlots, setBookedSlots] = useState<BookedSlot[]>([])
   const [loadingSlots, setLoadingSlots] = useState(true)
+  const [refreshing, setRefreshing] = useState(false)
+
+  const loadBookedSlots = useCallback(async (showRefreshing = false) => {
+    try {
+      if (showRefreshing) {
+        setRefreshing(true)
+      } else {
+        setLoadingSlots(true)
+      }
+
+      const response = await fetch('/api/booked-slots', {
+        method: 'GET',
+        cache: 'no-store',
+      })
+
+      const data = await response.json()
+      setBookedSlots(Array.isArray(data) ? data : [])
+    } catch (error) {
+      console.error('Failed to load booked slots:', error)
+      setBookedSlots([])
+    } finally {
+      setLoadingSlots(false)
+      setRefreshing(false)
+    }
+  }, [])
 
   useEffect(() => {
-    const loadBookedSlots = async () => {
-      try {
-        setLoadingSlots(true)
-        const response = await fetch('/api/booked-slots', { cache: 'no-store' })
-        const data = await response.json()
-        setBookedSlots(Array.isArray(data) ? data : [])
-      } catch (error) {
-        console.error('Failed to load booked slots:', error)
-        setBookedSlots([])
-      } finally {
-        setLoadingSlots(false)
+    loadBookedSlots()
+  }, [loadBookedSlots])
+
+  useEffect(() => {
+    if (selectedDate) {
+      loadBookedSlots(true)
+    }
+  }, [selectedDate, loadBookedSlots])
+
+  useEffect(() => {
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') {
+        loadBookedSlots(true)
       }
     }
 
-    loadBookedSlots()
-  }, [])
+    document.addEventListener('visibilitychange', handleVisibility)
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibility)
+    }
+  }, [loadBookedSlots])
 
   const days = useMemo(() => {
     const start = startOfMonth(currentMonth)
@@ -175,9 +205,20 @@ export function DateTimeStep({ selectedDate, selectedTime, onSelect }: DateTimeS
 
       {selectedDate && (
         <div className="mt-6">
-          <h4 className="mb-3 text-sm font-medium text-[#111111]">
-            Available times for {format(selectedDate, 'EEEE, MMMM d')}
-          </h4>
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <h4 className="text-sm font-medium text-[#111111]">
+              Available times for {format(selectedDate, 'EEEE, MMMM d')}
+            </h4>
+
+            <button
+              type="button"
+              onClick={() => loadBookedSlots(true)}
+              className="inline-flex items-center gap-1 rounded-full border border-[#eadfce] bg-white px-3 py-1.5 text-xs text-[#6b5f55] hover:bg-[#faf7f3]"
+            >
+              <RefreshCw className={cn('h-3.5 w-3.5', refreshing && 'animate-spin')} />
+              Refresh
+            </button>
+          </div>
 
           {loadingSlots ? (
             <p className="text-sm text-[#8a7f75]">Loading available slots...</p>
