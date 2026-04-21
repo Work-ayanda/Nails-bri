@@ -3,242 +3,220 @@ import type { Service, Addon } from './types'
 // ========================
 // SERVICES BY CATEGORY
 // ========================
+
 export const HANDS_SERVICES: Service[] = [
   {
-    id: 'acrylic-full',
-    name: 'Acrylic Full Set',
-    description: 'Full acrylic nail enhancement with your choice of shape and length',
+    id: 'acrylic-tips',
+    name: 'Acrylic Tips',
+    description: 'Classic acrylic extension service',
     duration: 120,
-    price: 350,
+    price: 400,
     category: 'hands',
-    deposit: 100
-  },
-  {
-    id: 'acrylic-fill',
-    name: 'Acrylic Fill',
-    description: 'Maintenance fill for existing acrylic nails',
-    duration: 90,
-    price: 280,
-    category: 'hands',
-    deposit: 100
+    deposit: 100,
   },
   {
     id: 'gel-overlay',
-    name: 'Classic Gel Overlay',
-    description: 'Protective gel coating over natural nails',
+    name: 'Gel Overlay',
+    description: 'Clean gel overlay on natural nails',
     duration: 75,
-    price: 250,
-    category: 'hands',
-    deposit: 100
-  },
-  {
-    id: 'gel-polish',
-    name: 'Gel Polish',
-    description: 'Long-lasting gel polish application',
-    duration: 45,
-    price: 180,
-    category: 'hands',
-    deposit: 100
-  },
-  {
-    id: 'soak-off',
-    name: 'Soak Off',
-    description: 'Safe removal of existing gel or acrylic',
-    duration: 30,
-    price: 80,
-    category: 'hands',
-    deposit: 100
-  },
-  {
-    id: 'nail-repair',
-    name: 'Nail Repair',
-    description: 'Repair for broken or damaged nails',
-    duration: 15,
-    price: 30,
+    price: 280,
     category: 'hands',
     deposit: 100,
-    priceNote: 'per nail'
   },
   {
-    id: 'nail-art-basic',
-    name: 'Nail Art Basic',
-    description: 'Simple nail art designs and accents',
-    duration: 20,
-    price: 50,
+    id: 'acrylic-overlay',
+    name: 'Acrylic Overlay',
+    description: 'Acrylic overlay for strength and structure',
+    duration: 90,
+    price: 350,
     category: 'hands',
-    deposit: 100
-  }
+    deposit: 100,
+  },
+  {
+    id: 'builder-gel-tips',
+    name: 'Builder Gel with Tips',
+    description: 'Builder gel extensions with tips',
+    duration: 120,
+    price: 400,
+    category: 'hands',
+    deposit: 100,
+  },
+  {
+    id: 'sculpturing-nails',
+    name: 'Sculpturing Nails',
+    description: 'Custom sculpted nail extensions',
+    duration: 150,
+    price: 550,
+    category: 'hands',
+    deposit: 100,
+  },
+  {
+    id: 'manicure-gel',
+    name: 'Manicure with Gel',
+    description: 'Full manicure finished with gel polish',
+    duration: 75,
+    price: 350,
+    category: 'hands',
+    deposit: 100,
+  },
+  {
+    id: 'mini-manicure',
+    name: 'Mini Manicure',
+    description: 'Quick manicure refresh',
+    duration: 45,
+    price: 200,
+    category: 'hands',
+    deposit: 100,
+  },
+  {
+    id: 'ombre-nails',
+    name: 'Ombré Nails',
+    description: 'Soft gradient ombré finish',
+    duration: 120,
+    price: 450,
+    category: 'hands',
+    deposit: 100,
+  },
+  {
+    id: 'french-gel',
+    name: 'French Gel',
+    description: 'Classic French gel finish',
+    duration: 75,
+    price: 300,
+    category: 'hands',
+    deposit: 100,
+  },
+  {
+    id: 'french-acrylic',
+    name: 'French Acrylic Tips',
+    description: 'French tip acrylic extension set',
+    duration: 120,
+    price: 480,
+    category: 'hands',
+    deposit: 100,
+  },
+  {
+    id: 'buff-shine',
+    name: 'Buff and Shine',
+    description: 'Natural nail buff and shine finish',
+    duration: 30,
+    price: 180,
+    category: 'hands',
+    deposit: 100,
+  },
+  {
+    id: 'soak-off-acrylic',
+    name: 'Soak Off (Acrylic)',
+    description: 'Acrylic removal only',
+    duration: 30,
+    price: 120,
+    category: 'hands',
+    deposit: 100,
+  },
 ]
 
 export const TOES_SERVICES: Service[] = [
   {
     id: 'gel-toes',
     name: 'Gel Toes',
-    description: 'Gel polish application for toes',
+    description: 'Gel polish for toes',
     duration: 45,
-    price: 180,
+    price: 200,
     category: 'toes',
-    deposit: 100
+    deposit: 100,
   },
   {
-    id: 'french-toes',
-    name: 'French Toes',
-    description: 'Classic French tip pedicure',
-    duration: 60,
-    price: 220,
+    id: 'gel-pedi',
+    name: 'Gel Pedicure',
+    description: 'Full pedicure finished with gel',
+    duration: 90,
+    price: 450,
     category: 'toes',
-    deposit: 100
+    deposit: 100,
   },
   {
-    id: 'basic-pedicure',
-    name: 'Basic Pedicure',
-    description: 'Essential pedicure with nail shaping and polish',
-    duration: 60,
+    id: 'mini-pedicure',
+    name: 'Mini Pedicure',
+    description: 'Quick pedicure refresh',
+    duration: 45,
     price: 250,
     category: 'toes',
-    deposit: 100
+    deposit: 100,
   },
-  {
-    id: 'luxury-pedicure',
-    name: 'Luxury Pedicure',
-    description: 'Premium pedicure with exfoliation and massage',
-    duration: 80,
-    price: 320,
-    category: 'toes',
-    deposit: 100
-  },
-  {
-    id: 'toe-nail-art',
-    name: 'Toe Nail Art',
-    description: 'Decorative nail art for toes',
-    duration: 20,
-    price: 50,
-    category: 'toes',
-    deposit: 100
-  }
 ]
 
 // ========================
 // ADD-ONS
 // ========================
+
 export const ADDONS: Addon[] = [
   {
-    id: 'french-tip',
-    name: 'French Tip',
-    price: 50,
-    duration: 15,
-    description: 'Classic French tip finish'
-  },
-  {
-    id: 'chrome-finish',
-    name: 'Chrome Finish',
-    price: 80,
+    id: 'nail-art',
+    name: 'Nail Art (per nail)',
+    price: 20,
     duration: 10,
-    description: 'Mirror-like chrome powder finish'
+    description: 'Detailed nail art charged per nail',
   },
   {
-    id: 'gems',
-    name: 'Gems / Rhinestones',
-    price: 60,
+    id: 'extreme-nail-art',
+    name: 'Extreme Nail Art',
+    price: 35,
     duration: 15,
-    description: 'Crystal embellishments'
+    description: 'Advanced statement nail art',
   },
-  {
-    id: '3d-art',
-    name: '3D Art',
-    price: 100,
-    duration: 30,
-    description: 'Dimensional nail art designs'
-  },
-  {
-    id: 'ombre',
-    name: 'Ombre',
-    price: 70,
-    duration: 20,
-    description: 'Gradient color blend effect'
-  },
-  {
-    id: 'extra-length',
-    name: 'Extra Length',
-    price: 50,
-    duration: 15,
-    description: 'Additional nail length'
-  },
-  {
-    id: 'addon-soak-off',
-    name: 'Soak Off',
-    price: 50,
-    duration: 20,
-    description: 'Removal of existing product'
-  },
-  {
-    id: 'repair-per-nail',
-    name: 'Repair Per Nail',
-    price: 30,
-    duration: 10,
-    description: 'Individual nail repair'
-  },
-  {
-    id: 'cuticle-care',
-    name: 'Cuticle Care Upgrade',
-    price: 40,
-    duration: 10,
-    description: 'Premium cuticle treatment'
-  },
-  {
-    id: 'luxury-finish',
-    name: 'Luxury Finish',
-    price: 60,
-    duration: 15,
-    description: 'Premium top coat with extra shine'
-  }
 ]
 
 // ========================
 // BUSINESS HOURS
 // ========================
-export const BUSINESS_HOURS: Record<string, { open: string; close: string; closed: boolean }> = {
+
+export const BUSINESS_HOURS: Record<
+  string,
+  { open: string; close: string; closed: boolean }
+> = {
   monday: { open: '09:00', close: '18:00', closed: false },
   tuesday: { open: '09:00', close: '18:00', closed: false },
   wednesday: { open: '09:00', close: '18:00', closed: false },
   thursday: { open: '09:00', close: '18:00', closed: false },
   friday: { open: '09:00', close: '18:00', closed: false },
   saturday: { open: '08:00', close: '15:00', closed: false },
-  sunday: { open: '', close: '', closed: true }
+  sunday: { open: '', close: '', closed: true },
 }
 
 export const TIME_SLOTS = [
-  '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
-  '12:00', '12:30', '13:00', '13:30', '14:00', '14:30',
-  '15:00', '15:30', '16:00', '16:30', '17:00', '17:30'
+  '09:00','09:30','10:00','10:30','11:00','11:30',
+  '12:00','12:30','13:00','13:30','14:00','14:30',
+  '15:00','15:30','16:00','16:30','17:00','17:30'
 ]
 
 export const SATURDAY_TIME_SLOTS = [
-  '08:00', '08:30', '09:00', '09:30', '10:00', '10:30',
-  '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30'
+  '08:00','08:30','09:00','09:30','10:00','10:30',
+  '11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30'
 ]
 
 // ========================
 // NAIL PREFERENCES
 // ========================
+
 export const NAIL_SHAPES = [
   { value: 'square', label: 'Square' },
   { value: 'coffin', label: 'Coffin' },
   { value: 'almond', label: 'Almond' },
   { value: 'stiletto', label: 'Stiletto' },
-  { value: 'round', label: 'Round' }
+  { value: 'round', label: 'Round' },
 ]
 
 export const NAIL_LENGTHS = [
   { value: 'short', label: 'Short' },
   { value: 'medium', label: 'Medium' },
   { value: 'long', label: 'Long' },
-  { value: 'xl', label: 'XL' }
+  { value: 'xl', label: 'XL' },
 ]
 
 // ========================
 // CONTACT INFO
 // ========================
+
 export const CONTACT_INFO = {
   businessName: "Nails @ Bri's",
   tagline: 'Luxury Nail Studio',
@@ -246,20 +224,23 @@ export const CONTACT_INFO = {
   whatsapp: '+27629704661',
   whatsappLink: 'https://wa.me/27629704661',
   email: 'hello@nailsatbris.co.za',
-  prefillMessage: "Hi Bridget, I've just submitted a booking request with Nails @ Bri's and would like to confirm my appointment."
+  prefillMessage:
+    "Hi Bridget, I've just submitted a booking request with Nails @ Bri's and would like to confirm my appointment.",
 }
 
 // ========================
 // POLICIES
 // ========================
+
 export const POLICIES = [
   'Minimum R100 deposit required to secure your appointment',
   'Deposits go toward the final total',
   'Late cancellations or missed appointments may forfeit the deposit',
-  'Arrivals more than 15 minutes late may require rescheduling'
+  'Arrivals more than 15 minutes late may require rescheduling',
 ]
 
 // ========================
 // MINIMUM DEPOSIT
 // ========================
+
 export const MINIMUM_DEPOSIT = 100
