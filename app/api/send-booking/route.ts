@@ -5,6 +5,13 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(req: Request) {
   try {
+    if (!process.env.RESEND_API_KEY) {
+      return NextResponse.json(
+        { success: false, message: 'Missing RESEND_API_KEY' },
+        { status: 500 }
+      )
+    }
+
     const booking = await req.json()
 
     const {
@@ -31,7 +38,7 @@ export async function POST(req: Request) {
       addons && addons.length > 0
         ? `
           <p><strong>Add-ons:</strong></p>
-          <ul>
+          <ul style="padding-left:18px; margin-top:6px;">
             ${addons
               .map(
                 (addon: { name: string; price: number }) =>
