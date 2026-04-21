@@ -265,7 +265,7 @@ export const ADDONS: Addon[] = [
 ]
 
 // ========================
-// 🔥 BOOKED SLOTS (NEW)
+// BOOKED SLOTS
 // ========================
 
 export const BOOKED_SLOTS: BookedSlot[] = [
@@ -275,5 +275,80 @@ export const BOOKED_SLOTS: BookedSlot[] = [
 ]
 
 // ========================
-// REST (UNCHANGED)
+// BUSINESS HOURS
 // ========================
+
+export const BUSINESS_HOURS: Record<
+  string,
+  { open: string; close: string; closed: boolean }
+> = {
+  monday: { open: '09:00', close: '18:00', closed: false },
+  tuesday: { open: '09:00', close: '18:00', closed: false },
+  wednesday: { open: '09:00', close: '18:00', closed: false },
+  thursday: { open: '09:00', close: '18:00', closed: false },
+  friday: { open: '09:00', close: '18:00', closed: false },
+  saturday: { open: '08:00', close: '15:00', closed: false },
+  sunday: { open: '', close: '', closed: true },
+}
+
+export const TIME_SLOTS = [
+  '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
+  '12:00', '12:30', '13:00', '13:30', '14:00', '14:30',
+  '15:00', '15:30', '16:00', '16:30', '17:00', '17:30',
+]
+
+export const SATURDAY_TIME_SLOTS = [
+  '08:00', '08:30', '09:00', '09:30', '10:00', '10:30',
+  '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30',
+]
+
+// ========================
+// NAIL PREFERENCES
+// ========================
+
+export const NAIL_SHAPES = [
+  { value: 'square', label: 'Square' },
+  { value: 'coffin', label: 'Coffin' },
+  { value: 'almond', label: 'Almond' },
+  { value: 'stiletto', label: 'Stiletto' },
+  { value: 'round', label: 'Round' },
+]
+
+export const NAIL_LENGTHS = [
+  { value: 'short', label: 'Short' },
+  { value: 'medium', label: 'Medium' },
+  { value: 'long', label: 'Long' },
+  { value: 'xl', label: 'XL' },
+]
+
+// ========================
+// CONTACT INFO
+// ========================
+
+export const CONTACT_INFO = {
+  businessName: "Nails @ Bri's",
+  tagline: 'Luxury Nail Studio',
+  owner: 'Bridget Chisangwa',
+  whatsapp: '+27629704661',
+  whatsappLink: 'https://wa.me/27629704661',
+  email: 'hello@nailsatbris.co.za',
+  prefillMessage:
+    "Hi Bridget, I've just submitted a booking request with Nails @ Bri's and would like to confirm my appointment.",
+}
+
+// ========================
+// POLICIES
+// ========================
+
+export const POLICIES = [
+  'Minimum R100 deposit required to secure your appointment',
+  'Deposits go toward the final total',
+  'Late cancellations or missed appointments may forfeit the deposit',
+  'Arrivals more than 15 minutes late may require rescheduling',
+]
+
+// ========================
+// MINIMUM DEPOSIT
+// ========================
+
+export const MINIMUM_DEPOSIT = 100
