@@ -2,7 +2,14 @@
 
 import { useState } from 'react'
 import { format } from 'date-fns'
-import { CheckCircle2, MessageCircle, Copy, RefreshCw, Check } from 'lucide-react'
+import {
+  CheckCircle2,
+  MessageCircle,
+  Copy,
+  RefreshCw,
+  Check,
+  MapPin,
+} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import type { BookingData } from '@/lib/types'
 import { CONTACT_INFO } from '@/lib/data'
@@ -21,7 +28,11 @@ function formatDuration(minutes: number): string {
   return `${hours}h ${mins}m`
 }
 
-export function ConfirmationStep({ booking, onReset, totalDuration }: ConfirmationStepProps) {
+export function ConfirmationStep({
+  booking,
+  onReset,
+  totalDuration,
+}: ConfirmationStepProps) {
   const [copied, setCopied] = useState(false)
 
   const bookingSummary = `
@@ -29,7 +40,7 @@ Booking Request - Nails @ Bri's
 
 Service: ${booking.service?.name}
 Category: ${booking.category}
-${booking.addons.length > 0 ? `Add-ons: ${booking.addons.map(a => a.name).join(', ')}` : ''}
+${booking.addons.length > 0 ? `Add-ons: ${booking.addons.map((a) => a.name).join(', ')}` : ''}
 
 Date: ${booking.date ? format(booking.date, 'EEEE, MMMM d, yyyy') : ''}
 Time: ${booking.time}
@@ -60,7 +71,9 @@ Name: ${booking.clientDetails.fullName}
 Subtotal: R${booking.subtotal}
 Deposit: R${booking.deposit}`
 
-  const whatsappUrl = `${CONTACT_INFO.whatsappLink}?text=${encodeURIComponent(whatsappMessage)}`
+  const whatsappUrl = `${CONTACT_INFO.whatsappLink}?text=${encodeURIComponent(
+    whatsappMessage
+  )}`
 
   return (
     <div className="p-4 md:p-6">
@@ -69,62 +82,108 @@ Deposit: R${booking.deposit}`
         <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
           <CheckCircle2 className="h-8 w-8 text-green-600" />
         </div>
-        <h2 className="font-serif text-xl font-semibold text-foreground">
+
+        <h2 className="text-xl font-semibold tracking-tight text-[#111111]">
           Booking Request Received
         </h2>
-        <p className="mt-2 text-sm text-muted-foreground">
+
+        <p className="mt-2 text-sm leading-6 text-[#6b5f55]">
           Thank you! {CONTACT_INFO.owner} will confirm your appointment via{' '}
-          {booking.clientDetails.preferredContact === 'whatsapp' ? 'WhatsApp' : 'email'} shortly.
+          {booking.clientDetails.preferredContact === 'whatsapp'
+            ? 'WhatsApp'
+            : 'email'}{' '}
+          shortly.
         </p>
       </div>
 
       {/* Booking summary card */}
-      <div className="mb-6 rounded-xl border border-border/50 bg-muted/30 p-4">
-        <h3 className="mb-3 font-serif text-sm font-medium text-foreground">
+      <div className="mb-6 rounded-[20px] border border-[#d8c2a6]/40 bg-white/80 p-4 shadow-sm">
+        <h3 className="mb-3 text-sm font-medium text-[#111111]">
           Booking Summary
         </h3>
-        
+
         <div className="space-y-2 text-sm">
-          <div className="flex justify-between">
-            <span className="text-muted-foreground">Service</span>
-            <span className="font-medium text-foreground">{booking.service?.name}</span>
+          <div className="flex justify-between gap-4">
+            <span className="text-[#8a7f75]">Service</span>
+            <span className="text-right font-medium text-[#111111]">
+              {booking.service?.name}
+            </span>
           </div>
+
           {booking.addons.length > 0 && (
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Add-ons</span>
-              <span className="text-right text-foreground">
-                {booking.addons.map(a => a.name).join(', ')}
+            <div className="flex justify-between gap-4">
+              <span className="text-[#8a7f75]">Add-ons</span>
+              <span className="text-right text-[#111111]">
+                {booking.addons.map((a) => a.name).join(', ')}
               </span>
             </div>
           )}
-          <div className="flex justify-between">
-            <span className="text-muted-foreground">Date</span>
-            <span className="text-foreground">
+
+          <div className="flex justify-between gap-4">
+            <span className="text-[#8a7f75]">Date</span>
+            <span className="text-right text-[#111111]">
               {booking.date ? format(booking.date, 'EEE, MMM d, yyyy') : '-'}
             </span>
           </div>
-          <div className="flex justify-between">
-            <span className="text-muted-foreground">Time</span>
-            <span className="text-foreground">{booking.time}</span>
+
+          <div className="flex justify-between gap-4">
+            <span className="text-[#8a7f75]">Time</span>
+            <span className="text-[#111111]">{booking.time}</span>
           </div>
-          <div className="flex justify-between">
-            <span className="text-muted-foreground">Duration</span>
-            <span className="text-foreground">{formatDuration(totalDuration)}</span>
+
+          <div className="flex justify-between gap-4">
+            <span className="text-[#8a7f75]">Duration</span>
+            <span className="text-[#111111]">
+              {formatDuration(totalDuration)}
+            </span>
           </div>
-          <div className="my-2 border-t border-border/50" />
-          <div className="flex justify-between">
-            <span className="text-muted-foreground">Subtotal</span>
-            <span className="text-foreground">R{booking.subtotal}</span>
+
+          <div className="my-2 border-t border-[#eadfce]" />
+
+          <div className="flex justify-between gap-4">
+            <span className="text-[#8a7f75]">Subtotal</span>
+            <span className="text-[#111111]">R{booking.subtotal}</span>
           </div>
-          <div className="flex justify-between">
-            <span className="text-primary">Deposit</span>
-            <span className="font-medium text-primary">R{booking.deposit}</span>
+
+          <div className="flex justify-between gap-4">
+            <span className="text-[#b08b57]">Deposit</span>
+            <span className="font-medium text-[#b08b57]">
+              R{booking.deposit}
+            </span>
           </div>
-          <div className="flex justify-between">
-            <span className="text-muted-foreground">Balance</span>
-            <span className="text-foreground">R{booking.remainingBalance}</span>
+
+          <div className="flex justify-between gap-4">
+            <span className="text-[#8a7f75]">Balance</span>
+            <span className="text-[#111111]">R{booking.remainingBalance}</span>
           </div>
         </div>
+      </div>
+
+      {/* Location */}
+      <div className="mb-6 rounded-[20px] border border-[#d8c2a6]/40 bg-[#fcf8f3] p-4 shadow-sm">
+        <div className="mb-3 flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#111111] text-white">
+            <MapPin className="h-4 w-4" />
+          </div>
+
+          <div>
+            <h3 className="text-sm font-medium text-[#111111]">
+              Salon Location
+            </h3>
+            <p className="text-xs text-[#6b5f55]">
+              Tap below to open directions
+            </p>
+          </div>
+        </div>
+
+        <a
+          href="https://maps.app.goo.gl/6S96Rga1RA1DDmUu9"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block w-full rounded-full border border-[#111111] px-4 py-3 text-center text-sm font-medium text-[#111111] transition-all hover:bg-[#111111] hover:text-white"
+        >
+          Open in Google Maps
+        </a>
       </div>
 
       {/* Action buttons */}
@@ -143,7 +202,7 @@ Deposit: R${booking.deposit}`
         <Button
           variant="outline"
           onClick={handleCopy}
-          className="w-full gap-2"
+          className="w-full gap-2 rounded-full border-[#d8c2a6] bg-white text-[#111111] hover:bg-[#faf7f3]"
           size="lg"
         >
           {copied ? (
@@ -162,7 +221,7 @@ Deposit: R${booking.deposit}`
         <Button
           variant="ghost"
           onClick={onReset}
-          className="w-full gap-2"
+          className="w-full gap-2 rounded-full text-[#111111] hover:bg-[#faf7f3]"
           size="lg"
         >
           <RefreshCw className="h-4 w-4" />
@@ -171,7 +230,7 @@ Deposit: R${booking.deposit}`
       </div>
 
       {/* Contact note */}
-      <p className="mt-6 text-center text-xs text-muted-foreground">
+      <p className="mt-6 text-center text-xs text-[#8a7f75]">
         Need help? Contact us on WhatsApp at {CONTACT_INFO.whatsapp}
       </p>
     </div>
