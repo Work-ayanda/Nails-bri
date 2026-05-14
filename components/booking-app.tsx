@@ -11,9 +11,9 @@ import { DateTimeStep } from '@/components/booking/steps/datetime-step'
 import { DetailsStep } from '@/components/booking/steps/details-step'
 import { InspirationStep } from '@/components/booking/steps/inspiration-step'
 import { ReviewStep } from '@/components/booking/steps/review-step'
-import { DepositStep } from '@/components/booking/steps/deposit-step'
 import { ConfirmationStep } from '@/components/booking/steps/confirmation-step'
 import { StickyNavigation } from '@/components/booking/sticky-navigation'
+
 import {
   type BookingData,
   type BookingStep,
@@ -25,7 +25,6 @@ import {
   BOOKING_STEPS,
   getInitialBookingData,
 } from '@/lib/types'
-import { MINIMUM_DEPOSIT } from '@/lib/data'
 
 const shellClassName =
   'overflow-hidden rounded-[32px] border border-[#d8c2a6]/40 bg-white/75 shadow-[0_20px_70px_rgba(0,0,0,0.08)] backdrop-blur'
@@ -36,14 +35,16 @@ export function BookingApp() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [slotsRefreshToken, setSlotsRefreshToken] = useState(0)
 
+  // ✅ CLEAN TOTALS (NO DEPOSIT)
   const totals = useMemo(() => {
     const servicePrice = booking.service?.price ?? 0
     const addonsPrice = booking.addons.reduce((sum, addon) => sum + addon.price, 0)
     const subtotal = servicePrice + addonsPrice
-    const deposit = MINIMUM_DEPOSIT
-    const remainingBalance = Math.max(0, subtotal - deposit)
 
-    return { subtotal, deposit, remainingBalance }
+    return {
+      subtotal,
+      remainingBalance: subtotal,
+    }
   }, [booking.service, booking.addons])
 
   const totalDuration = useMemo(() => {
@@ -73,7 +74,8 @@ export function BookingApp() {
     }
   }, [currentStepIndex])
 
-  const handleDepositConfirm = useCallback(async () => {
+  // ✅ FINAL SUBMIT (used on Review step now)
+  const handleFinalSubmit = useCallback(async () => {
     try {
       setIsSubmitting(true)
 
@@ -100,6 +102,7 @@ export function BookingApp() {
     } catch (err) {
       console.error('BOOKING SUBMISSION ERROR:', err)
       alert('Booking saved but email failed')
+
       setSlotsRefreshToken((prev) => prev + 1)
       setCurrentStep('confirmation')
     } finally {
@@ -157,8 +160,6 @@ export function BookingApp() {
       case 'inspiration':
         return true
       case 'review':
-        return true
-      case 'deposit':
         return true
       default:
         return false
@@ -235,13 +236,6 @@ export function BookingApp() {
                 totalDuration={totalDuration}
               />
             )}
-
-            {currentStep === 'deposit' && (
-              <DepositStep
-                booking={bookingWithTotals}
-                onConfirm={handleDepositConfirm}
-              />
-            )}
           </motion.div>
         </AnimatePresence>
       </div>
@@ -250,9 +244,9 @@ export function BookingApp() {
         currentStep={currentStep}
         canProceed={canProceed}
         onBack={goToPreviousStep}
-        onNext={currentStep === 'deposit' ? handleDepositConfirm : goToNextStep}
+        onNext={currentStep === 'review' ? handleFinalSubmit : goToNextStep}
         isFirstStep={currentStepIndex === 0}
-        isLastStep={currentStep === 'deposit'}
+        isLastStep={currentStep === 'review'}
       />
     </Card>
   )
