@@ -12,7 +12,6 @@ export const HANDS_SERVICES: Service[] = [
     duration: 120,
     price: 400,
     category: 'hands',
-    deposit: 100,
   },
   {
     id: 'gel-overlay',
@@ -21,7 +20,6 @@ export const HANDS_SERVICES: Service[] = [
     duration: 75,
     price: 280,
     category: 'hands',
-    deposit: 100,
   },
   {
     id: 'acrylic-overlay',
@@ -30,7 +28,6 @@ export const HANDS_SERVICES: Service[] = [
     duration: 90,
     price: 350,
     category: 'hands',
-    deposit: 100,
   },
   {
     id: 'builder-gel-tips',
@@ -39,7 +36,6 @@ export const HANDS_SERVICES: Service[] = [
     duration: 120,
     price: 400,
     category: 'hands',
-    deposit: 100,
   },
   {
     id: 'sculpturing-nails',
@@ -48,7 +44,6 @@ export const HANDS_SERVICES: Service[] = [
     duration: 150,
     price: 550,
     category: 'hands',
-    deposit: 100,
   },
   {
     id: 'manicure-gel',
@@ -57,7 +52,6 @@ export const HANDS_SERVICES: Service[] = [
     duration: 75,
     price: 350,
     category: 'hands',
-    deposit: 100,
   },
   {
     id: 'mini-manicure',
@@ -66,7 +60,6 @@ export const HANDS_SERVICES: Service[] = [
     duration: 45,
     price: 200,
     category: 'hands',
-    deposit: 100,
   },
   {
     id: 'ombre-nails',
@@ -75,7 +68,6 @@ export const HANDS_SERVICES: Service[] = [
     duration: 120,
     price: 450,
     category: 'hands',
-    deposit: 100,
   },
   {
     id: 'french-gel',
@@ -84,7 +76,6 @@ export const HANDS_SERVICES: Service[] = [
     duration: 75,
     price: 300,
     category: 'hands',
-    deposit: 100,
   },
   {
     id: 'french-acrylic',
@@ -93,7 +84,6 @@ export const HANDS_SERVICES: Service[] = [
     duration: 120,
     price: 480,
     category: 'hands',
-    deposit: 100,
   },
   {
     id: 'buff-shine',
@@ -102,7 +92,6 @@ export const HANDS_SERVICES: Service[] = [
     duration: 30,
     price: 180,
     category: 'hands',
-    deposit: 100,
   },
   {
     id: 'soak-off-acrylic',
@@ -111,7 +100,6 @@ export const HANDS_SERVICES: Service[] = [
     duration: 30,
     price: 120,
     category: 'hands',
-    deposit: 100,
   },
 ]
 
@@ -123,7 +111,6 @@ export const TOES_SERVICES: Service[] = [
     duration: 45,
     price: 200,
     category: 'toes',
-    deposit: 100,
   },
   {
     id: 'gel-pedi',
@@ -132,7 +119,6 @@ export const TOES_SERVICES: Service[] = [
     duration: 90,
     price: 450,
     category: 'toes',
-    deposit: 100,
   },
   {
     id: 'mini-pedicure',
@@ -141,7 +127,6 @@ export const TOES_SERVICES: Service[] = [
     duration: 45,
     price: 250,
     category: 'toes',
-    deposit: 100,
   },
 ]
 
@@ -337,18 +322,11 @@ export const CONTACT_INFO = {
 }
 
 // ========================
-// POLICIES
+// POLICIES (CLEANED)
 // ========================
 
 export const POLICIES = [
-  'Minimum R100 deposit required to secure your appointment',
-  'Deposits go toward the final total',
-  'Late cancellations or missed appointments may forfeit the deposit',
+  'Please arrive on time for your appointment',
   'Arrivals more than 15 minutes late may require rescheduling',
+  'Cancellations should be made at least 24 hours in advance',
 ]
-
-// ========================
-// MINIMUM DEPOSIT
-// ========================
-
-export const MINIMUM_DEPOSIT = 100
