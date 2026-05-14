@@ -52,7 +52,6 @@ Email: ${booking.clientDetails.email}
 Contact via: ${booking.clientDetails.preferredContact}
 
 Subtotal: R${booking.subtotal}
-Deposit: R${booking.deposit}
 Balance: R${booking.remainingBalance}
   `.trim()
 
@@ -68,8 +67,7 @@ ${booking.service?.name}
 ${booking.date ? format(booking.date, 'EEEE, MMMM d') : ''} at ${booking.time}
 
 Name: ${booking.clientDetails.fullName}
-Subtotal: R${booking.subtotal}
-Deposit: R${booking.deposit}`
+Subtotal: R${booking.subtotal}`
 
   const whatsappUrl = `${CONTACT_INFO.whatsappLink}?text=${encodeURIComponent(
     whatsappMessage
@@ -143,13 +141,6 @@ Deposit: R${booking.deposit}`
           <div className="flex justify-between gap-4">
             <span className="text-[#8a7f75]">Subtotal</span>
             <span className="text-[#111111]">R{booking.subtotal}</span>
-          </div>
-
-          <div className="flex justify-between gap-4">
-            <span className="text-[#b08b57]">Deposit</span>
-            <span className="font-medium text-[#b08b57]">
-              R{booking.deposit}
-            </span>
           </div>
 
           <div className="flex justify-between gap-4">
