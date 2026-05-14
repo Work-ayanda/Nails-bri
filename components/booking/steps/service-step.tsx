@@ -3,7 +3,7 @@
 import { Clock, Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { Category, Service } from '@/lib/types'
-import { HANDS_SERVICES, TOES_SERVICES, MINIMUM_DEPOSIT } from '@/lib/data'
+import { HANDS_SERVICES, TOES_SERVICES } from '@/lib/data'
 
 interface ServiceStepProps {
   category: Category
@@ -69,10 +69,6 @@ export function ServiceStep({ category, selected, onSelect }: ServiceStepProps) 
                     <span className="inline-flex items-center gap-1.5 rounded-full border border-[#eadfce] bg-[#faf7f3] px-3 py-1.5">
                       <Clock className="h-3.5 w-3.5 text-[#b08b57]" />
                       {formatDuration(service.duration)}
-                    </span>
-
-                    <span className="inline-flex items-center rounded-full border border-[#eadfce] bg-[#faf7f3] px-3 py-1.5">
-                      R{MINIMUM_DEPOSIT} deposit
                     </span>
                   </div>
                 </div>
