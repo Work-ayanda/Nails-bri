@@ -54,7 +54,7 @@ export function ReviewStep({ booking, totalDuration }: ReviewStepProps) {
         </h2>
 
         <p className="mt-2 text-sm leading-6 text-[#6b5f55]">
-          Please confirm your details before securing your appointment
+          Please confirm your details before finalising your appointment
         </p>
       </div>
 
@@ -68,6 +68,7 @@ export function ReviewStep({ booking, totalDuration }: ReviewStepProps) {
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span className="text-[#8a7f75]">Category</span>
+
               <span className="capitalize text-[#111111]">
                 {booking.category}
               </span>
@@ -75,6 +76,7 @@ export function ReviewStep({ booking, totalDuration }: ReviewStepProps) {
 
             <div className="flex justify-between">
               <span className="text-[#8a7f75]">Service</span>
+
               <span className="text-[#111111]">
                 {booking.service?.name}
               </span>
@@ -83,6 +85,7 @@ export function ReviewStep({ booking, totalDuration }: ReviewStepProps) {
             {booking.addons.length > 0 && (
               <div className="flex justify-between">
                 <span className="text-[#8a7f75]">Add-ons</span>
+
                 <div className="text-right">
                   {booking.addons.map((addon) => (
                     <div key={addon.id} className="text-[#111111]">
@@ -104,6 +107,7 @@ export function ReviewStep({ booking, totalDuration }: ReviewStepProps) {
           <div className="space-y-2 text-sm">
             <div className="flex items-center gap-2 text-[#111111]">
               <Calendar className="h-4 w-4 text-[#b08b57]" />
+
               {booking.date
                 ? format(booking.date, 'EEEE, MMMM d, yyyy')
                 : '-'}
@@ -111,6 +115,7 @@ export function ReviewStep({ booking, totalDuration }: ReviewStepProps) {
 
             <div className="flex items-center gap-2 text-[#111111]">
               <Clock className="h-4 w-4 text-[#b08b57]" />
+
               {booking.time} ({formatDuration(totalDuration)})
             </div>
           </div>
@@ -157,6 +162,7 @@ export function ReviewStep({ booking, totalDuration }: ReviewStepProps) {
                   </span>
                 </div>
               )}
+
               {booking.clientDetails.nailPreferences.length && (
                 <div>
                   Length:{' '}
@@ -188,6 +194,7 @@ export function ReviewStep({ booking, totalDuration }: ReviewStepProps) {
             {booking.inspiration.photos.length > 0 && (
               <div className="flex items-center gap-2 text-sm text-[#6b5f55]">
                 <ImageIcon className="h-4 w-4" />
+
                 {booking.inspiration.photos.length} photo
                 {booking.inspiration.photos.length > 1 ? 's' : ''}
               </div>
@@ -204,7 +211,7 @@ export function ReviewStep({ booking, totalDuration }: ReviewStepProps) {
         {/* Pricing */}
         <div className="rounded-[22px] border border-[#111111] bg-[#111111] p-5 text-white shadow-md">
           <h3 className="mb-4 text-sm font-medium tracking-wide">
-            Payment Summary
+            Booking Summary
           </h3>
 
           <div className="space-y-2 text-sm">
@@ -214,7 +221,10 @@ export function ReviewStep({ booking, totalDuration }: ReviewStepProps) {
             </div>
 
             {booking.addons.map((addon) => (
-              <div key={addon.id} className="flex justify-between opacity-90">
+              <div
+                key={addon.id}
+                className="flex justify-between opacity-90"
+              >
                 <span>{addon.name}</span>
                 <span>R{addon.price}</span>
               </div>
@@ -222,20 +232,14 @@ export function ReviewStep({ booking, totalDuration }: ReviewStepProps) {
 
             <div className="my-3 border-t border-white/20" />
 
-            <div className="flex justify-between font-medium">
-              <span>Subtotal</span>
+            <div className="flex justify-between text-lg font-semibold">
+              <span>Total</span>
               <span>R{booking.subtotal}</span>
             </div>
 
-            <div className="flex justify-between text-[#d8c2a6]">
-              <span>Deposit (due now)</span>
-              <span>R{booking.deposit}</span>
-            </div>
-
-            <div className="flex justify-between opacity-80">
-              <span>Balance (at appointment)</span>
-              <span>R{booking.remainingBalance}</span>
-            </div>
+            <p className="pt-2 text-xs text-[#d8c2a6]">
+              Payment will be made in-store during your appointment.
+            </p>
           </div>
         </div>
       </div>
